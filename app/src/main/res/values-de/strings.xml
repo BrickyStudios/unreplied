@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting_title">Wartet auf dich</string>
+    <plurals name="waiting_meta">
+        <item quantity="one">%d Person · gelesen, unbeantwortet</item>
+        <item quantity="other">%d Leute · gelesen, unbeantwortet</item>
+    </plurals>
+    <string name="week_done">diese Woche %d beantwortet</string>
+    <string name="settings">Einstellungen</string>
+    <string name="back">Zurück</string>
+    <string name="start_sprint">Antwort-Sprint starten</string>
+    <string name="open_list">Liste öffnen</string>
+    <string name="tomorrow">Morgen</string>
+    <string name="hint_swipe">← wischen: erledigt · → wischen: später · tippen: Chat öffnen · halten: mehr</string>
+    <string name="section_later">Später</string>
+    <string name="back_at">kommt %s wieder</string>
+    <string name="section_quiet">Lange nicht geschrieben</string>
+    <string name="quiet_since">seit %s nichts</string>
+    <string name="checked_in">gemeldet</string>
+    <string name="section_unread">Ungelesen (zeigt dein Messenger auch)</string>
+    <string name="stored_note">Gespeichert: Name, Uhrzeiten, erste 80 Zeichen. Die App hat keinen Internetzugriff.</string>
+    <string name="empty_title">Niemand wartet auf dich.</string>
+    <plurals name="done_today">
+        <item quantity="one">Heute %d erledigt.</item>
+        <item quantity="other">Heute %d erledigt.</item>
+    </plurals>
+    <string name="read_at">gelesen %s</string>
+    <string name="done">erledigt</string>
+    <string name="later_lc">später</string>
+
+    <string name="menu_reply">Antworten</string>
+    <string name="menu_later">Später: %s</string>
+    <string name="menu_back_now">Jetzt zurück in die Liste</string>
+    <string name="menu_favorite">Favorit (ans Melden erinnern)</string>
+    <string name="menu_unfavorite">Favorit entfernen</string>
+    <string name="menu_ignore">Diesen Chat ignorieren</string>
+    <string name="menu_done">Als erledigt markieren</string>
+    <string name="in_3h">in 3 Stunden</string>
+    <string name="when_today">heute %s</string>
+    <string name="when_tomorrow">morgen %s</string>
+
+    <string name="age_min">%d Min</string>
+    <string name="age_hour">%d Std</string>
+    <string name="age_day">%d T</string>
+    <string name="age_week">%d Wo</string>
+
+    <string name="access_title">Benachrichtigungen mitlesen erlauben</string>
+    <string name="access_body">Nur so sieht der Radar, wann du einen Chat geöffnet hast. Er liest nur die Messenger, die du einschaltest, und nichts verlässt das Handy.</string>
+    <string name="access_button">Zugriff erlauben</string>
+    <string name="restricted_help">Schalter ausgegraut oder Android meldet „Eingeschränkte Einstellung“? Das sperrt Android bei Apps, die aus einer Datei installiert wurden. Öffne die App-Info, tippe oben rechts auf ⋮, wähle „Eingeschränkte Einstellungen zulassen“ und versuch es dann noch mal.</string>
+    <string name="restricted_button">App-Info öffnen</string>
+    <string name="onboard_title">So funktioniert\'s</string>
+    <string name="onboard_1">1. Lies deine Nachrichten wie immer.</string>
+    <string name="onboard_2">2. Chat geöffnet, aber nicht geantwortet? Dann landet er hier.</string>
+    <string name="onboard_3">3. Antworten, wegwischen oder auf später schieben. Eine Erinnerung am Tag, nie eine pro Nachricht.</string>
+    <string name="onboard_ok">Verstanden</string>
+
+    <string name="sprint_progress">%1$d von %2$d</string>
+    <string name="waiting_since">wartet seit %s</string>
+    <string name="reply_hint">Deine Antwort</string>
+    <string name="send">Senden</string>
+    <string name="copy_open">Kopieren und Chat öffnen</string>
+    <string name="skip">Weiter</string>
+    <string name="later">Später</string>
+    <string name="mark_done">Erledigt</string>
+    <string name="sprint_done">Alle durch.</string>
+    <plurals name="sprint_done_count">
+        <item quantity="one">%d Chat beantwortet oder weggelegt.</item>
+        <item quantity="other">%d Chats beantwortet oder weggelegt.</item>
+    </plurals>
+    <string name="sent_ok">Gesendet</string>
+    <string name="send_failed">Senden ging nicht, der Text ist kopiert</string>
+    <string name="no_reply_button">Für diesen Chat gibt es gerade keinen Antwort-Knopf. Den bekommt der Radar nur aus einer frischen Benachrichtigung. Text kopieren und im Chat senden.</string>
+
+    <string name="settings_reminder">Tagesmeldung</string>
+    <string name="hour_fmt">%02d:00 Uhr</string>
+    <string name="test_now">Jetzt testen</string>
+    <string name="settings_messengers">Messenger</string>
+    <string name="untested">ungetestet</string>
+    <string name="show_all">Alle unterstützten Apps zeigen</string>
+    <string name="none_installed">Keiner der unterstützten Messenger ist installiert.</string>
+    <string name="settings_groups">Gruppen</string>
+    <string name="groups_body">Gruppenchats erscheinen nur, wenn dich jemand @erwähnt. Trag ein, wie du in Gruppen heißt, mehrere mit Komma.</string>
+    <string name="names_hint">z. B. Alex, Al</string>
+    <string name="settings_replies">Textbausteine</string>
+    <string name="replies_body">Einer pro Zeile. Du kannst sie wählen, wenn du aus dem Radar antwortest.</string>
+    <string name="settings_quiet">Lange nicht geschrieben</string>
+    <string name="quiet_body">Favoriten erscheinen hier, wenn so lange keine Nachricht hin oder her ging. Favorit wird jemand, wenn du seinen Chat gedrückt hältst.</string>
+    <plurals name="weeks">
+        <item quantity="one">%d Woche</item>
+        <item quantity="other">%d Wochen</item>
+    </plurals>
+    <string name="settings_ignored">Ignorierte Chats</string>
+    <string name="unignore">wieder anzeigen</string>
+    <string name="none">Keine.</string>
+    <string name="settings_log">Prüfprotokoll</string>
+    <string name="log_body">Zeigt, welchen Grund-Code Android meldet, wenn ein Messenger eine Benachrichtigung entfernt. Steht beim Öffnen eines Chats 8 oder 1, klappt die Lese-Erkennung auf deinem Handy.</string>
+    <string name="log_empty">Noch nichts. Lass dir eine Nachricht schicken und öffne den Chat.</string>
+    <string name="clear">leeren</string>
+    <string name="delete_all">Alle Daten löschen</string>
+    <string name="delete_confirm">Noch mal tippen löscht alle Chats, Kontakte und das Protokoll</string>
+    <string name="deleted">Gelöscht.</string>
+    <string name="about">Version %s · GPL-3.0 · Quellcode auf GitHub</string>
+
+    <string name="ev_new">neue Nachricht</string>
+    <string name="ev_read">Grund %d → gelesen</string>
+    <string name="ev_removed">Grund %d (System, zählt nicht als gelesen)</string>
+    <string name="ev_answered">deine Antwort gesehen → erledigt</string>
+    <string name="ev_done">in der App erledigt</string>
+    <string name="ev_replied">aus dem Radar beantwortet</string>
+    <string name="ev_snoozed">auf später geschoben</string>
+    <string name="ev_ignored">ignoriert</string>
+
+    <string name="channel_summary">Tagesmeldung</string>
+    <plurals name="summary_title">
+        <item quantity="one">%d Person wartet auf dich</item>
+        <item quantity="other">%d Leute warten auf dich</item>
+    </plurals>
+    <string name="summary_quiet">Lange nicht geschrieben: %s</string>
+    <string name="summary_quiet_title">Mal wieder melden?</string>
+    <string name="nobody_waiting">Niemand wartet</string>
+    <string name="widget_empty">Alles beantwortet</string>
+    <string name="widget_description">Zeigt, wer auf deine Antwort wartet</string>
+    <string name="tile_waiting">%d warten</string>
+    <string name="tile_none">niemand wartet</string>
+
+    <string name="default_replies">Hab\'s gesehen, ich melde mich heute Abend.\nKlingt gut!\nSorry für die späte Antwort!\nKann ich dich später anrufen?</string>
+</resources>

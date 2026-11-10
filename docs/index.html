@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Antwort-Radar: WhatsApp reply reminder for Android (ADHD-friendly, open source)</title>
-<meta name="description" content="Read a WhatsApp message and forgot to reply? Antwort-Radar notices when you open a chat without answering and keeps a list of who is waiting. Free, open source, no internet permission, runs on GrapheneOS.">
+<title>Antwort-Radar: reply reminder for WhatsApp, Signal and Telegram on Android (ADHD-friendly, open source)</title>
+<meta name="description" content="Read a message and forgot to reply? Antwort-Radar notices when you open a WhatsApp, Signal or Telegram chat without answering, lists who is waiting and lets you answer everyone in one sprint. Free, open source, no internet permission.">
 <link rel="canonical" href="https://brickystudios.github.io/antwort-radar/">
 <link rel="alternate" hreflang="en" href="https://brickystudios.github.io/antwort-radar/">
 <link rel="alternate" hreflang="de" href="https://brickystudios.github.io/antwort-radar/#deutsch">
@@ -23,7 +23,7 @@
   "alternateName": "Reply Radar",
   "operatingSystem": "Android 8.0+",
   "applicationCategory": "UtilitiesApplication",
-  "description": "Reply reminder for WhatsApp on Android. Notices when you open a chat and don't answer, lists who is waiting for you and sends one reminder a day. No internet permission.",
+  "description": "Reply reminder for WhatsApp, Signal, Telegram and SMS on Android. Notices when you open a chat and don't answer, lists who is waiting for you, offers a reply sprint with quick replies and sends one reminder a day. No internet permission.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
   "license": "https://www.gnu.org/licenses/gpl-3.0.html",
   "downloadUrl": "https://github.com/BrickyStudios/antwort-radar/releases/latest/download/AntwortRadar.apk",
@@ -56,21 +56,25 @@
 <main>
   <div class="brand">Antwort-<b>Radar</b></div>
   <h1>Never forget a WhatsApp you read but didn't answer</h1>
-  <p>You open a WhatsApp chat, answer in your head, and never send it. WhatsApp stops showing the chat as unread the moment you open it. Antwort-Radar notices exactly that moment and keeps a short list of <strong>who is waiting for your reply</strong>, and for how long.</p>
-  <p class="muted">Free Android app · no internet permission · no account · runs on GrapheneOS · built for people with ADHD</p>
+  <p>You open a chat, answer in your head, and never send it. Your messenger stops showing the chat as unread the moment you open it. Antwort-Radar notices exactly that moment and keeps a short list of <strong>who is waiting for your reply</strong>, and for how long.</p>
+  <p class="muted">Free Android app · WhatsApp, Signal, Telegram, Threema, SMS · no internet permission · no account · English and German · built for people with ADHD</p>
   <a class="cta" href="https://github.com/BrickyStudios/antwort-radar/releases/latest/download/AntwortRadar.apk">Download APK</a>
   <a class="cta ghost" href="https://github.com/BrickyStudios/antwort-radar">Source code on GitHub</a>
 
   <div class="shots">
     <img src="bilder/1-waiting.png" alt="List of people waiting for a reply, oldest first" loading="lazy" width="260" height="462">
-    <img src="bilder/2-check-log.png" alt="Settings with daily reminder hour, group mention names and check log" loading="lazy" width="260" height="462">
+    <img src="bilder/2-sprint.png" alt="Reply sprint with quick replies" loading="lazy" width="260" height="462">
+    <img src="bilder/3-settings.png" alt="Settings: reminder hour, messengers, groups, quick replies" loading="lazy" width="260" height="462">
   </div>
 
   <h2>How it works</h2>
   <table>
     <tr><td>You open a chat, tap or swipe the notification</td><td>The chat moves to <em>Wartet auf dich</em> (waiting for you)</td></tr>
     <tr><td>You reply from the notification</td><td>Marked done automatically</td></tr>
-    <tr><td>You reply inside WhatsApp</td><td>Swipe the entry away</td></tr>
+    <tr><td>You reply inside the messenger</td><td>Swipe left: done</td></tr>
+    <tr><td>Not now</td><td>Swipe right: back in 3 hours, or tonight, or tomorrow morning</td></tr>
+    <tr><td>Several people waiting</td><td>Reply sprint: one at a time, with your quick replies</td></tr>
+    <tr><td>A favorite you haven't written to in weeks</td><td>Shows up under "Haven't written in a while"</td></tr>
     <tr><td>Group chats</td><td>Only when someone @-mentions you</td></tr>
     <tr><td>Once a day, at your hour</td><td>One reminder: "3 Leute warten auf dich"</td></tr>
   </table>
@@ -81,13 +85,13 @@
   <h2>Privacy</h2>
   <ul>
     <li>No internet permission: the app cannot send anything anywhere.</li>
-    <li>Reads WhatsApp notifications only, skips every other app.</li>
+    <li>Reads only the messengers you switch on, skips every other app.</li>
     <li>Keeps name, times and the first 80 characters per chat, in private app storage, excluded from backups.</li>
     <li>Open source under GPL-3.0.</li>
   </ul>
 
   <h2 id="deutsch">Auf Deutsch</h2>
-  <p>Du liest eine WhatsApp, antwortest im Kopf und schickst nie ab. Antwort-Radar merkt, wenn du einen Chat öffnest und nicht antwortest, und zeigt dir, wer seit wann auf dich wartet. Einmal am Tag kommt eine Sammelmeldung. Kostenlos, ohne Internet-Berechtigung, Open Source.</p>
+  <p>Du liest eine Nachricht, antwortest im Kopf und schickst nie ab. Antwort-Radar merkt, wenn du einen Chat öffnest und nicht antwortest, und zeigt dir, wer seit wann auf dich wartet. Mit Antwort-Sprint, Textbausteinen, „Später“ und einer Sammelmeldung am Tag. Für WhatsApp, Signal, Telegram, Threema und SMS. Kostenlos, ohne Internet-Berechtigung, Open Source.</p>
   <a class="cta" href="https://github.com/BrickyStudios/antwort-radar/releases/latest/download/AntwortRadar.apk">APK herunterladen</a>
 
   <footer>Antwort-Radar is not affiliated with WhatsApp or Meta. · <a href="https://github.com/BrickyStudios">BrickyStudios</a></footer>

@@ -10,11 +10,23 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import java.util.Calendar
 
+/** "3 T" / "3 d": short ages for lists, the reminder and the widget. */
+fun ageText(ctx: Context, ms: Long): String {
+    val (n, span) = Radar.age(ms)
+    val res = when (span) { Span.MIN -> R.string.age_min; Span.HOUR -> R.string.age_hour; Span.DAY -> R.string.age_day; Span.WEEK -> R.string.age_week }
+    return ctx.getString(res, n)
+}
+
+/** "Mama (3 T), Lisa (2 T), Tim (5 Std)" */
+fun waitingText(ctx: Context, waiting: List<Entry>, now: Long) =
+    waiting.joinToString(", ") { "${it.name} (${ageText(ctx, now - it.since)})" }
+
 /** One collected reminder per day at the chosen hour, never one per message. */
 object Summary {
     private const val CHANNEL = "summary"
     private const val ID = 1
     const val ACTION_LATER = "io.github.brickystudios.antwortradar.LATER"
+    const val EXTRA_SPRINT = "sprint"
 
     /**
      * One alarm at a time, re-armed after it fires. A repeating inexact alarm may drift by up to 18 hours (seen on
@@ -30,32 +42,39 @@ object Summary {
             .setWindow(AlarmManager.RTC_WAKEUP, c.timeInMillis, Radar.HOUR, pi)
     }
 
-    /** "Mama (3 T), Lisa (2 T), Tim (5 Std)" */
-    fun text(waiting: List<Entry>, now: Long) =
-        waiting.joinToString(", ") { "${it.name} (${Radar.age(now - it.since)})" }
-
     fun show(ctx: Context) {
         Store.init(ctx)
-        val waiting = Radar.waiting(Store.entries.value.values)
+        val now = System.currentTimeMillis()
+        val waiting = Radar.waiting(Store.entries.value.values, now)
+        val quiet = Radar.quiet(Store.contacts.value.values, now, Prefs(ctx).quietWeeks)
+        if (waiting.isEmpty() && quiet.isEmpty()) return
         val nm = ctx.getSystemService(NotificationManager::class.java)
-        if (waiting.isEmpty()) return
-        nm.createNotificationChannel(NotificationChannel(CHANNEL, "Tagesmeldung", NotificationManager.IMPORTANCE_DEFAULT))
+        nm.createNotificationChannel(NotificationChannel(CHANNEL, ctx.getString(R.string.channel_summary), NotificationManager.IMPORTANCE_DEFAULT))
         val open = PendingIntent.getActivity(ctx, 0, Intent(ctx, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
+        val sprint = PendingIntent.getActivity(
+            ctx, 2, Intent(ctx, MainActivity::class.java).putExtra(EXTRA_SPRINT, true), PendingIntent.FLAG_IMMUTABLE,
+        )
         val later = PendingIntent.getBroadcast(
             ctx, 1, Intent(ctx, SummaryReceiver::class.java).setAction(ACTION_LATER), PendingIntent.FLAG_IMMUTABLE,
         )
-        val n = NotificationCompat.Builder(ctx, CHANNEL)
+        val lines = listOfNotNull(
+            waitingText(ctx, waiting, now).takeIf { waiting.isNotEmpty() },
+            ctx.getString(R.string.summary_quiet, quiet.joinToString(", ") { it.name }).takeIf { quiet.isNotEmpty() },
+        ).joinToString("\n")
+        val title = if (waiting.isEmpty()) ctx.getString(R.string.summary_quiet_title)
+        else ctx.resources.getQuantityString(R.plurals.summary_title, waiting.size, waiting.size)
+        val b = NotificationCompat.Builder(ctx, CHANNEL)
             .setSmallIcon(R.drawable.ic_stat)
-            .setContentTitle(if (waiting.size == 1) "1 Person wartet auf dich" else "${waiting.size} Leute warten auf dich")
-            .setContentText(text(waiting, System.currentTimeMillis()))
-            .setStyle(NotificationCompat.BigTextStyle().bigText(text(waiting, System.currentTimeMillis())))
+            .setContentTitle(title)
+            .setContentText(lines)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(lines))
             .setContentIntent(open)
             .setAutoCancel(true)
-            .addAction(0, "Liste öffnen", open)
-            .addAction(0, "Morgen", later)
-            .build()
+        if (waiting.size >= 2) b.addAction(0, ctx.getString(R.string.start_sprint), sprint)
+        else b.addAction(0, ctx.getString(R.string.open_list), open)
+        b.addAction(0, ctx.getString(R.string.tomorrow), later)
         // no notification permission: the list in the app still works
-        runCatching { nm.notify(ID, n) }.onFailure { android.util.Log.w("AntwortRadar", "summary not shown", it) }
+        runCatching { nm.notify(ID, b.build()) }.onFailure { android.util.Log.w("AntwortRadar", "summary not shown", it) }
     }
 
     fun hide(ctx: Context) = ctx.getSystemService(NotificationManager::class.java).cancel(ID)

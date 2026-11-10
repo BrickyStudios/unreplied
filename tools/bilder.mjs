@@ -6,9 +6,10 @@ const { chromium } = await import(process.env.PLAYWRIGHT ?? "playwright");
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const app = (f) => `file://${root}/docs/bilder/app/${f}`;
 const images = [
-  ["1-waiting.png", 1080, 1920, "tall", "Read on WhatsApp,|never answered", "the list fills itself", app("liste.png")],
-  ["2-check-log.png", 1080, 1920, "tall", "You see why|it counts as read", "check log with Android's reason codes", app("protokoll.png")],
-  ["social-preview.png", 1280, 640, "wide", "Who is waiting|for your reply", "Android · WhatsApp · offline · ADHD-friendly", app("liste.png")],
+  ["1-waiting.png", 1080, 1920, "tall", "Read it,|never answered?", "the list fills itself from your notifications", app("list.png")],
+  ["2-sprint.png", 1080, 1920, "tall", "Answer everyone|in one go", "reply sprint with your own quick replies", app("sprint.png")],
+  ["3-settings.png", 1080, 1920, "tall", "WhatsApp, Signal,|Telegram, SMS", "you pick which messengers it reads", app("settings.png")],
+  ["social-preview.png", 1280, 640, "wide", "Who is waiting|for your reply", "Android · WhatsApp, Signal, Telegram · offline · ADHD-friendly", app("list.png")],
 ];
 const browser = await chromium.launch();
 for (const [name, w, h, art, t, s, img] of images) {
