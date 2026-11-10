@@ -54,3 +54,5 @@ fastlane/readme.md
 
 .kotlin/
 .gstack/
+.hallmark/
+docs/.hallmark/

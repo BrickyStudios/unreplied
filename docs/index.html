@@ -20,10 +20,10 @@
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "Unreplied",
-  "alternateName": "Unreplied",
+  "alternateName": "Antwort-Radar",
   "operatingSystem": "Android 8.0+",
   "applicationCategory": "UtilitiesApplication",
-  "description": "Reply reminder for WhatsApp, Signal, Telegram and SMS on Android. Notices when you open a chat and don't answer, lists who is waiting for you, offers a reply sprint with quick replies and sends one reminder a day. No internet permission.",
+  "description": "Reply reminder for WhatsApp, Signal, Telegram and SMS on Android. Notices when you open a chat and don’t answer, lists who is waiting for you, offers a reply sprint with quick replies and sends one reminder a day. No internet permission.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
   "license": "https://www.gnu.org/licenses/gpl-3.0.html",
   "downloadUrl": "https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied.apk",
@@ -41,7 +41,7 @@
    "name": "How do I remember to text people back?",
    "acceptedAnswer": {
     "@type": "Answer",
-    "text": "Unreplied keeps the list for you. It notices when you open a chat on WhatsApp, Signal, Telegram or SMS and don't reply, and shows everyone who is waiting, oldest first. Once a day it sends one reminder, never one per message."
+    "text": "Unreplied keeps the list for you. It notices when you open a chat on WhatsApp, Signal, Telegram or SMS and don’t reply, and shows everyone who is waiting, oldest first. Once a day it sends one reminder, never one per message."
    }
   },
   {
@@ -49,7 +49,7 @@
    "name": "Is there an app for unanswered WhatsApp messages?",
    "acceptedAnswer": {
     "@type": "Answer",
-    "text": "Yes. Unreplied is a free Android app that tracks WhatsApp chats you read but didn't answer. WhatsApp itself only marks chats unread until you open them."
+    "text": "Yes. Unreplied is a free Android app that tracks WhatsApp chats you read but didn’t answer. WhatsApp itself only marks chats unread until you open them."
    }
   },
   {
@@ -73,89 +73,205 @@
    "name": "Is there an iPhone version?",
    "acceptedAnswer": {
     "@type": "Answer",
-    "text": "No. Unreplied needs Android's notification access, which iOS doesn't offer to apps."
+    "text": "No. Unreplied needs Android’s notification access, which iOS doesn’t offer to apps."
    }
   }
  ]
 }
 </script>
-<style>
-  :root { --ink:#14121C; --card:#1F1C2B; --line:#3A3550; --paper:#EDEAF5; --muted:#A29CB5; --coral:#FF8A65; }
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--ink); color: var(--paper); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
-  main { max-width: 760px; margin: 0 auto; padding: 56px 16px 80px; }
-  .brand { font-weight: 600; letter-spacing: -.01em; } .brand b { color: var(--coral); font-weight: 600; }
-  h1 { font-size: clamp(34px, 7vw, 52px); line-height: 1.08; letter-spacing: -.025em; margin: 18px 0 16px; }
-  h3 { font-size: 17px; margin: 22px 0 4px; }
-  h2 { font-size: 24px; margin: 56px 0 12px; letter-spacing: -.01em; }
-  p, li { color: var(--paper); } .muted { color: var(--muted); }
-  a { color: var(--coral); }
-  .cta { display: inline-block; margin: 22px 12px 0 0; padding: 14px 22px; border-radius: 12px; background: var(--coral); color: var(--ink); font-weight: 700; text-decoration: none; min-height: 44px; }
-  .ghost { background: transparent; color: var(--paper); border: 1px solid var(--line); }
-  .shots { display: flex; gap: 16px; margin-top: 40px; overflow-x: auto; }
-  .shots img { width: 260px; max-width: 70vw; border-radius: 16px; flex: none; }
-  table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 15px; }
-  td { border-top: 1px solid var(--line); padding: 10px 8px 10px 0; vertical-align: top; }
-  td:first-child { color: var(--muted); width: 42%; }
-  ul { padding-left: 20px; }
-  footer { margin-top: 64px; font-size: 14px; color: var(--muted); }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main>
-  <div class="brand">Un<b>replied</b></div>
-  <h1>The ADHD texting app that reminds you to text back</h1>
-  <p>You open a chat, answer in your head, and never send it. Your messenger stops showing the chat as unread the moment you open it. Unreplied notices exactly that moment and keeps a short list of <strong>who is waiting for your reply</strong>, and for how long.</p>
-  <p class="muted">Free Android app · WhatsApp, Signal, Telegram, Threema, SMS · no internet permission · no account · English and German · built for people with ADHD</p>
-  <a class="cta" href="https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied.apk">Download APK</a>
-  <a class="cta ghost" href="https://github.com/BrickyStudios/unreplied">Source code on GitHub</a>
+  <header class="nav">
+    <div class="container nav__row">
+      <a class="wordmark" href="./" aria-label="Unreplied, home">Un<span>replied</span></a>
+      <nav class="nav__links" aria-label="Page">
+        <a href="#deutsch" hreflang="de" lang="de">Deutsch</a>
+        <a href="https://github.com/BrickyStudios/unreplied">GitHub</a>
+      </nav>
+    </div>
+  </header>
 
-  <div class="shots">
-    <img src="bilder/1-waiting.png" alt="List of people waiting for a reply, oldest first" loading="lazy" width="260" height="462">
-    <img src="bilder/2-sprint.png" alt="Reply sprint with quick replies" loading="lazy" width="260" height="462">
-    <img src="bilder/3-settings.png" alt="Settings: reminder hour, messengers, groups, quick replies" loading="lazy" width="260" height="462">
-  </div>
+  <main>
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__text">
+          <h1>Who is still waiting for your reply</h1>
+          <p class="lead">An ADHD texting app that lists chats you read but never answered.</p>
+          <div class="actions">
+            <a class="button" href="https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied.apk">Download APK</a>
+            <a class="textlink" href="https://github.com/BrickyStudios/unreplied">Source code on GitHub</a>
+          </div>
+          <p class="fine">Free, for Android 8 and newer. No account, no internet permission.</p>
+        </div>
+        <figure class="screen hero__shot" data-slot="hero" data-kind="product" data-alt="Unreplied’s waiting list on a phone">
+          <img src="bilder/app/list.webp" width="720" height="1466" fetchpriority="high" alt="The waiting list: Mom has waited 3 days, Sarah 2 days, Tom 5 hours, and a study group mentioned you 40 minutes ago">
+        </figure>
+      </div>
+    </section>
 
-  <h2>How it works</h2>
-  <table>
-    <tr><td>You open a chat, tap or swipe the notification</td><td>The chat moves to <em>Wartet auf dich</em> (waiting for you)</td></tr>
-    <tr><td>You reply from the notification</td><td>Marked done automatically</td></tr>
-    <tr><td>You reply inside the messenger</td><td>Swipe left: done</td></tr>
-    <tr><td>Not now</td><td>Swipe right: back in 3 hours, or tonight, or tomorrow morning</td></tr>
-    <tr><td>Several people waiting</td><td>Reply sprint: one at a time, with your quick replies</td></tr>
-    <tr><td>A favorite you haven't written to in weeks</td><td>Shows up under "Haven't written in a while"</td></tr>
-    <tr><td>Group chats</td><td>Only when someone @-mentions you</td></tr>
-    <tr><td>Once a day, at your hour</td><td>One reminder: "3 Leute warten auf dich"</td></tr>
-  </table>
+    <section class="moment">
+      <div class="container">
+        <h2 class="statement">Opening a chat clears the unread badge. <span>Unreplied keeps the chat until you answer.</span></h2>
+      </div>
+    </section>
 
-  <h2>Nothing to type in</h2>
-  <p>A to-do app only helps if you type the reminder in, right when your head is already somewhere else. Unreplied fills the list on its own from the notifications Android already shows you.</p>
+    <section class="screens" aria-labelledby="screens-head">
+      <div class="container">
+        <h2 id="screens-head">Three screens do the work</h2>
+        <div class="tabs" role="tablist" aria-label="Screens" hidden>
+          <button type="button" class="tab" role="tab" id="tab-list" aria-controls="panel-list" aria-selected="true">Waiting list</button>
+          <button type="button" class="tab" role="tab" id="tab-sprint" aria-controls="panel-sprint" aria-selected="false" tabindex="-1">Reply sprint</button>
+          <button type="button" class="tab" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false" tabindex="-1">Settings</button>
+        </div>
+        <div class="panel" id="panel-list" role="tabpanel" aria-labelledby="tab-list">
+          <figure class="screen" data-slot="list" data-kind="product" data-alt="The waiting list">
+            <img src="bilder/app/list.webp" width="720" height="1466" loading="lazy" alt="">
+          </figure>
+          <div class="panel__text">
+            <h3>Waiting list</h3>
+            <p>Oldest first, with how long each person has waited. Swipe left when you answered, right for later.</p>
+          </div>
+        </div>
+        <div class="panel" id="panel-sprint" role="tabpanel" aria-labelledby="tab-sprint">
+          <figure class="screen" data-slot="sprint" data-kind="product" data-alt="The reply sprint">
+            <img src="bilder/app/sprint.webp" width="720" height="1466" loading="lazy" alt="">
+          </figure>
+          <div class="panel__text">
+            <h3>Reply sprint</h3>
+            <p>One person at a time, with your own quick replies, sent through the messenger’s reply button.</p>
+          </div>
+        </div>
+        <div class="panel" id="panel-settings" role="tabpanel" aria-labelledby="tab-settings">
+          <figure class="screen" data-slot="settings" data-kind="product" data-alt="The settings">
+            <img src="bilder/app/settings.webp" width="720" height="1466" loading="lazy" alt="">
+          </figure>
+          <div class="panel__text">
+            <h3>Settings</h3>
+            <p>Pick the messengers, the reminder hour and your quick replies. A check log shows what Android reports.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <h2>Privacy</h2>
-  <ul>
-    <li>No internet permission: the app cannot send anything anywhere.</li>
-    <li>Reads only the messengers you switch on, skips every other app.</li>
-    <li>Keeps name, times and the first 80 characters per chat, in private app storage, excluded from backups.</li>
-    <li>Open source under GPL-3.0.</li>
-  </ul>
+    <section class="how" aria-labelledby="how-head">
+      <div class="container">
+        <h2 id="how-head">How a chat moves through it</h2>
+        <ol class="rows">
+          <li><h3>You open a chat</h3><p>It joins the list with the time you read it.</p></li>
+          <li><h3>You reply from the notification</h3><p>Unreplied sees your message and marks the chat done.</p></li>
+          <li><h3>You reply inside the messenger</h3><p>Swipe the entry left. Android tells apps nothing about it.</p></li>
+          <li><h3>Not now</h3><p>Swipe right: it returns in three hours, tonight or tomorrow morning.</p></li>
+          <li><h3>Your reminder hour</h3><p>One notice with everyone who waits, never one per message.</p></li>
+        </ol>
+      </div>
+    </section>
 
-  <h2>Questions</h2>
-  <h3>How do I remember to text people back?</h3>
-  <p>Unreplied keeps the list for you. It notices when you open a chat on WhatsApp, Signal, Telegram or SMS and don't reply, and shows everyone who is waiting, oldest first. Once a day it sends one reminder, never one per message.</p>
-  <h3>Is there an app for unanswered WhatsApp messages?</h3>
-  <p>Yes. Unreplied is a free Android app that tracks WhatsApp chats you read but didn't answer. WhatsApp itself only marks chats unread until you open them.</p>
-  <h3>Does Unreplied read my messages or upload them?</h3>
-  <p>It reads the notifications of the messengers you switch on and keeps the name, the times and the first 80 characters of the last message on your phone. The app has no internet permission, so it cannot send anything anywhere.</p>
-  <h3>Why is texting back so hard with ADHD?</h3>
-  <p>Many people with ADHD read a message, plan the answer in their head and get pulled away before sending it. Once the chat is opened, the unread badge is gone and the reminder with it. Unreplied brings that reminder back.</p>
-  <h3>Is there an iPhone version?</h3>
-  <p>No. Unreplied needs Android's notification access, which iOS doesn't offer to apps.</p>
+    <section class="private" aria-labelledby="private-head">
+      <div class="container split">
+        <div>
+          <h2 id="private-head">Nothing leaves your phone</h2>
+          <dl class="facts">
+            <div><dt>No internet permission</dt><dd>The app cannot send anything anywhere.</dd></div>
+            <div><dt>Stored per chat</dt><dd>The name, the times and the first 80 characters, in private app storage, excluded from backups.</dd></div>
+            <div><dt>Open source</dt><dd>GPL-3.0, with one button in the settings that deletes everything.</dd></div>
+          </dl>
+        </div>
+        <div class="apps">
+          <h3>Messengers it reads</h3>
+          <ul>
+            <li>WhatsApp</li><li>WhatsApp Business</li><li>Signal and Molly</li><li>Telegram and Telegram X</li>
+          </ul>
+          <ul>
+            <li>Threema</li><li>Google Messages</li><li>Fossify SMS and QKSMS</li><li class="off">Instagram, Discord and Snapchat, off until you switch them on</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-  <h2 id="deutsch">Auf Deutsch</h2>
-  <p>Unreplied (früher Antwort-Radar) ist eine WhatsApp-Erinnerung für unbeantwortete Nachrichten. Du liest eine Nachricht, antwortest im Kopf und schickst nie ab. Unreplied merkt, wenn du einen Chat öffnest und nicht antwortest, und zeigt dir, wer seit wann auf dich wartet. Mit Antwort-Sprint, Textbausteinen, „Später“ und einer Sammelmeldung am Tag. Für WhatsApp, Signal, Telegram, Threema und SMS. Kostenlos, ohne Internet-Berechtigung, Open Source.</p>
-  <a class="cta" href="https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied.apk">APK herunterladen</a>
+    <section class="faq" aria-labelledby="faq-head">
+      <div class="container faq__grid">
+        <h2 id="faq-head">Before you install</h2>
+        <div>
+        <details>
+          <summary><h3>How do I remember to text people back?</h3></summary>
+          <p>Unreplied keeps the list for you. It notices when you open a chat on WhatsApp, Signal, Telegram or SMS and don’t reply, and shows everyone who is waiting, oldest first. Once a day it sends one reminder, never one per message.</p>
+        </details>
+        <details>
+          <summary><h3>Is there an app for unanswered WhatsApp messages?</h3></summary>
+          <p>Yes. Unreplied is a free Android app that tracks WhatsApp chats you read but didn’t answer. WhatsApp itself only marks chats unread until you open them.</p>
+        </details>
+        <details>
+          <summary><h3>Does Unreplied read my messages or upload them?</h3></summary>
+          <p>It reads the notifications of the messengers you switch on and keeps the name, the times and the first 80 characters of the last message on your phone. The app has no internet permission, so it cannot send anything anywhere.</p>
+        </details>
+        <details>
+          <summary><h3>Why is texting back so hard with ADHD?</h3></summary>
+          <p>Many people with ADHD read a message, plan the answer in their head and get pulled away before sending it. Once the chat is opened, the unread badge is gone and the reminder with it. Unreplied brings that reminder back.</p>
+        </details>
+        <details>
+          <summary><h3>Is there an iPhone version?</h3></summary>
+          <p>No. Unreplied needs Android’s notification access, which iOS doesn’t offer to apps.</p>
+        </details>
+        </div>
+      </div>
+    </section>
 
-  <footer>Unreplied is not affiliated with WhatsApp or Meta. · <a href="https://github.com/BrickyStudios">BrickyStudios</a></footer>
-</main>
+    <section class="band" id="deutsch" lang="de" aria-labelledby="de-head">
+      <div class="container band__grid">
+        <div class="band__text">
+          <h2 id="de-head">Unreplied auf Deutsch</h2>
+          <p>Unreplied (früher Antwort-Radar) ist eine WhatsApp-Erinnerung für unbeantwortete Nachrichten. Du liest, antwortest im Kopf und schickst nie ab: Die App merkt sich, wer seit wann wartet, und meldet sich einmal am Tag.</p>
+          <a class="button" href="https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied.apk">APK herunterladen</a>
+        </div>
+        <figure class="screen" data-slot="reminder" data-kind="product" data-alt="The daily reminder notification">
+          <img src="bilder/app/reminder.webp" width="996" height="220" loading="lazy" alt="Die Tagesmeldung: 2 Leute warten auf dich, Tim und Mama">
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__mast" aria-hidden="true">Un<span>replied</span></p>
+      <nav class="footer__links" aria-label="Project">
+        <a class="textlink" href="https://github.com/BrickyStudios/unreplied">Source code</a>
+        <a class="textlink" href="https://github.com/BrickyStudios/unreplied/releases">Releases</a>
+        <a class="textlink" href="https://github.com/BrickyStudios/unreplied/issues">Report a problem</a>
+        <a class="textlink" href="https://github.com/BrickyStudios/unreplied/blob/main/LICENSE">GPL-3.0</a>
+        <a class="textlink" href="https://github.com/BrickyStudios">BrickyStudios</a>
+      </nav>
+      <p class="footer__legal">Unreplied is not affiliated with WhatsApp or Meta.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Tabs only with script: without it every screen stays visible, one under the other.
+    (() => {
+      const list = document.querySelector('[role="tablist"]');
+      const tabs = [...list.querySelectorAll('[role="tab"]')];
+      const show = (tab, focus) => {
+        tabs.forEach((t) => {
+          const on = t === tab;
+          t.setAttribute('aria-selected', on);
+          t.tabIndex = on ? 0 : -1;
+          document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+        });
+        if (focus) tab.focus();
+      };
+      document.documentElement.classList.add('js');
+      list.hidden = false;
+      show(tabs[0], false);
+      tabs.forEach((t, i) => {
+        t.addEventListener('click', () => show(t, false));
+        t.addEventListener('keydown', (e) => {
+          const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+          if (step) { e.preventDefault(); show(tabs[(i + step + tabs.length) % tabs.length], true); }
+        });
+      });
+    })();
+  </script>
+  <script>window.hallmarkSlots = (m) => { for (const [k, v] of Object.entries(m)) { const s = document.querySelector(`[data-slot="${k}"]`); if (!s) continue; const im = new Image(); im.src = typeof v === 'string' ? v : v.src; im.alt = (typeof v === 'object' && v.alt) || s.dataset.alt || ''; s.querySelectorAll(':scope > img').forEach((o) => o.remove()); s.prepend(im); } };
+document.querySelectorAll('[data-slot] img').forEach((i) => { if (i.complete && !i.naturalWidth) i.remove(); else i.addEventListener('error', () => i.remove(), { once: true }); });</script>
 </body>
 </html>
