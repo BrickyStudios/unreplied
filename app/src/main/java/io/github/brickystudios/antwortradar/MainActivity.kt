@@ -39,6 +39,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 
 private sealed interface Screen {
@@ -57,6 +59,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         if (Build.VERSION.SDK_INT >= 33) askNotify.launch(Manifest.permission.POST_NOTIFICATIONS)
         sprintRequest.value = intent.getBooleanExtra(Summary.EXTRA_SPRINT, false)
+        // only Unreplied-Updates.apk has internet; release builds only, a debug build carries another key
+        if (Updater.supported && !BuildConfig.DEBUG && Prefs(this).autoUpdate) lifecycleScope.launch { Updater.check(this@MainActivity, manual = false) }
         setContent {
             MaterialTheme(colorScheme = darkColorScheme(background = Ink, surface = CardBg, primary = Coral, onPrimary = Ink)) {
                 Box(Modifier.fillMaxSize().background(Ink).safeDrawingPadding()) { App(sprintRequest) }

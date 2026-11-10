@@ -32,6 +32,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 
 @Composable
 fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
@@ -60,6 +62,8 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
     var swiped by remember { mutableStateOf(prefs.swiped) }
     var selfTestDone by remember { mutableStateOf(prefs.selfTestDone) }
     val log by Store.log.collectAsStateWithLifecycle()
+    val update by Updater.state.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
     LifecycleResumeEffect(Unit) {
         allowed = ctx.packageName in NotificationManagerCompat.getEnabledListenerPackages(ctx)
         onPauseOrDispose {}
@@ -99,6 +103,25 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
                     Text(if (weekDone > 0) meta + "\n" + stringResource(R.string.week_done, weekDone) else meta, color = Text2, fontSize = 15.sp, modifier = Modifier.padding(top = 4.dp))
                 }
                 IconButton(onClick = onSettings) { Icon(Icons.Outlined.Settings, stringResource(R.string.settings), tint = Text2) }
+            }
+        }
+        update?.let { u ->
+            item(key = "update") {
+                Group {
+                    Column(Modifier.padding(20.dp)) {
+                        Text(stringResource(R.string.update_available, u.release.version), color = Text1, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+                        if (u.failed) Text(stringResource(R.string.update_failed), color = Coral, fontSize = 14.sp, modifier = Modifier.padding(top = 6.dp))
+                        Row(Modifier.padding(top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Button(
+                                onClick = { scope.launch { Updater.install(ctx) } }, enabled = u.progress == null,
+                                colors = ButtonDefaults.buttonColors(containerColor = Coral, contentColor = Ink),
+                            ) {
+                                Text(if (u.progress == null) stringResource(R.string.update_install) else stringResource(R.string.update_downloading, (u.progress * 100).toInt()))
+                            }
+                            if (u.progress == null) TextButton(onClick = Updater::later) { Text(stringResource(R.string.update_later), color = Text2) }
+                        }
+                    }
+                }
             }
         }
         if (!allowed) item {

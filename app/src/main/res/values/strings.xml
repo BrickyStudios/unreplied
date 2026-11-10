@@ -164,4 +164,16 @@
     <string name="nudge_label">Own reminder after</string>
     <string name="quiet_label">“Haven’t written” after</string>
     <string name="favorites_body">Hold a chat to make someone a favorite. Favorites get their own reminder once they have waited this long, and show up under “Haven’t written in a while” after this many weeks without a message.</string>
+    <string name="updates_title">Updates</string>
+    <string name="auto_update">Check GitHub for updates</string>
+    <string name="check_now">Check now</string>
+    <string name="update_available">Version %s is available</string>
+    <string name="update_install">Install</string>
+    <string name="update_later">Later</string>
+    <string name="update_downloading">Downloading… %d %%</string>
+    <string name="update_none">You have the latest version.</string>
+    <string name="update_failed">GitHub couldn’t be reached or the download failed. Try again later.</string>
+    <string name="open_releases">Open the release page</string>
+    <string name="updates_online_body">This version connects to GitHub only to look for a new release and download it. Your chats never leave the phone. The version without any internet access is Unreplied.apk on the same page.</string>
+    <string name="updates_offline_body">This version has no internet access and can’t update itself. Add the repo to Obtainium, or install Unreplied-Updates.apk from the release page over this one: it keeps your data and updates itself through GitHub.</string>
 </resources>

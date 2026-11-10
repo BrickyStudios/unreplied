@@ -217,4 +217,25 @@ class RadarTest {
         assertTrue(lines[2].contains("Chat 1"))
         assertTrue(lines[3].contains("listener"))
     }
+
+    @Test fun versionsCompareNumerically() {
+        assertTrue(Releases.isNewer("v0.10.0", "0.9.2"))
+        assertTrue(Releases.isNewer("v0.4.1", "0.4.0"))
+        assertEquals(false, Releases.isNewer("v0.4.0", "0.4.0"))
+        assertEquals(false, Releases.isNewer("v0.3.9", "0.4.0"))
+    }
+
+    @Test fun releaseParsingPicksThisFlavorsOwnApk() {
+        val json = """{"tag_name":"v0.5.0","assets":[
+            {"name":"Unreplied.apk","size":100,"browser_download_url":"https://github.com/BrickyStudios/unreplied/releases/download/v0.5.0/Unreplied.apk"},
+            {"name":"Unreplied-Updates.apk","size":120,"browser_download_url":"https://github.com/BrickyStudios/unreplied/releases/download/v0.5.0/Unreplied-Updates.apk"}]}"""
+        val r = Releases.parse(json, "Unreplied-Updates.apk")!!
+        assertEquals("0.5.0", r.version)
+        assertTrue(r.apkUrl.endsWith("/Unreplied-Updates.apk"))
+        assertEquals(120L, r.bytes)
+        // an asset hosted anywhere else is never trusted
+        assertNull(Releases.parse(json.replace("https://github.com/BrickyStudios/unreplied/releases/download/v0.5.0/Unreplied-Updates.apk", "https://evil.example/x.apk"), "Unreplied-Updates.apk"))
+        assertNull(Releases.parse("not json", "Unreplied.apk"))
+        assertNull(Releases.parse(json, "Other.apk"))
+    }
 }

@@ -44,10 +44,12 @@ Unreplied catches the moment it happens. It started as Antwort-Radar (German for
 
 ## Install
 
-1. Download [`Unreplied.apk`](https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied.apk) and open it (Android 8.0 or newer).
+1. Pick one of two downloads, same app, same key (you can switch later by installing the other over it, your data stays):
+   - [`Unreplied.apk`](https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied.apk): **no internet permission at all**. Updates through Obtainium.
+   - [`Unreplied-Updates.apk`](https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied-Updates.apk): checks GitHub on start and installs new versions with one tap (switch it off in the settings). The internet is used for nothing else.
 2. Tap **Allow access** and switch on notification access for Unreplied. If the switch is greyed out, open the app info, tap ⋮ and choose *Allow restricted settings* (Android 13+ asks this for apps installed from a file).
 3. Optional: add the widget to your home screen and the tile to your quick settings.
-4. Updates: add `https://github.com/BrickyStudios/unreplied` to [Obtainium](https://github.com/ImranR98/Obtainium). The app has no internet permission, so it can't update itself.
+4. Updates for `Unreplied.apk`: add `https://github.com/BrickyStudios/unreplied` to [Obtainium](https://github.com/ImranR98/Obtainium) and set the APK filter to `^Unreplied\.apk$`.
 
 ## How it works
 
@@ -85,7 +87,7 @@ On by default: WhatsApp, WhatsApp Business, Signal, Molly, Telegram, Telegram X,
 
 ## Privacy
 
-- **No internet permission.** Check it yourself: `aapt dump permissions Unreplied.apk` lists `POST_NOTIFICATIONS` and `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` (to offer the battery exception), and no `INTERNET`.
+- **No internet permission** in `Unreplied.apk`. Check it yourself: `aapt dump permissions Unreplied.apk` lists `POST_NOTIFICATIONS` and `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` (to offer the battery exception), and no `INTERNET`. `Unreplied-Updates.apk` adds `INTERNET` and `REQUEST_INSTALL_PACKAGES`, used only by [`Updater.kt`](app/src/updates/java/io/github/brickystudios/antwortradar/Updater.kt) to ask GitHub for the latest release and download it.
 - Only the messengers you switch on are read. Every other app's notifications are skipped in the first check of the listener.
 - Stored per chat: name, times, the first 80 characters of the last message. All in one file in the app's private storage, excluded from cloud backup and device transfer. **Delete all data** in the settings wipes it.
 - No analytics, no crash reporting, no Google libraries beyond AndroidX.
@@ -127,7 +129,7 @@ Du liest eine Nachricht, antwortest im Kopf und schickst nie ab. Unreplied merkt
 - WhatsApp, Signal, Telegram, Threema und SMS, jeder Messenger einzeln schaltbar
 - Widget, Schnelleinstellungs-Kachel und eine Tagesmeldung zu deiner Uhrzeit, nie eine pro Nachricht
 - Ohne Internet-Berechtigung, ohne Konto, App auf Deutsch und Englisch, läuft auf GrapheneOS
-- [APK herunterladen](https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied.apk), Updates über Obtainium
+- Zwei Downloads: [Unreplied.apk](https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied.apk) ganz ohne Internet (Updates über Obtainium) oder [Unreplied-Updates.apk](https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied-Updates.apk), die sich selbst über GitHub aktualisiert
 
 ## License
 

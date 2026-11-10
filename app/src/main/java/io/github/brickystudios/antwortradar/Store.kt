@@ -160,6 +160,11 @@ class Prefs(private val ctx: Context) {
         get() = p.getBoolean("selfTestDone", false)
         set(v) = p.edit().putBoolean("selfTestDone", v).apply()
 
+    /** Unreplied-Updates.apk only: look for a newer release on every app start. */
+    var autoUpdate: Boolean
+        get() = p.getBoolean("autoUpdate", true)
+        set(v) = p.edit().putBoolean("autoUpdate", v).apply()
+
     var onboarded: Boolean
         get() = p.getBoolean("onboarded", false)
         set(v) = p.edit().putBoolean("onboarded", v).apply()

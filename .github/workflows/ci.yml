@@ -16,4 +16,4 @@ jobs:
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
       - name: Unit tests (state machine, store)
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testOfflineDebugUnitTest testUpdatesDebugUnitTest

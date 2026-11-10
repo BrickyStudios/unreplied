@@ -46,19 +46,21 @@ jobs:
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/release.jks
 
       - name: Unit tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testOfflineDebugUnitTest testUpdatesDebugUnitTest
 
-      - name: Build Release APK
-        run: ./gradlew assembleRelease
+      - name: Build both release APKs
+        run: ./gradlew assembleOfflineRelease assembleUpdatesRelease
         env:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
 
-      - name: Rename APK
+      - name: Rename APKs
         run: |
-          # same name in every release, so releases/latest/download/Unreplied.apk always works
-          mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/Unreplied.apk
+          # same names in every release, so releases/latest/download/<name> always works and the updater finds its file
+          mkdir -p out
+          mv app/build/outputs/apk/offline/release/app-offline-release.apk out/Unreplied.apk
+          mv app/build/outputs/apk/updates/release/app-updates-release.apk out/Unreplied-Updates.apk
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -66,10 +68,14 @@ jobs:
           tag_name: ${{ steps.tag.outputs.value }}
           name: Unreplied ${{ steps.tag.outputs.value }}
           body: |
-            Download `Unreplied.apk` below and install it (Android 8.0 or newer, runs on GrapheneOS without Google services).
-            The app has no internet permission, so it cannot update itself: add this repo to Obtainium for updates.
+            Two downloads, same app (Android 8.0 or newer, runs on GrapheneOS without Google services):
+            - `Unreplied.apk`: no internet permission at all. Updates through Obtainium (filter `^Unreplied\.apk$`).
+            - `Unreplied-Updates.apk`: checks GitHub for new versions and installs them; the internet is used for nothing else.
+            Both are signed with the same key, so you can switch by installing the other one over it.
 
-            Lade `Unreplied.apk` herunter und installiere sie (Android 8.0 oder neuer, läuft auf GrapheneOS ohne Google-Dienste).
-          files: app/build/outputs/apk/release/Unreplied.apk
+            Zwei Downloads, dieselbe App: `Unreplied.apk` ganz ohne Internet (Updates über Obtainium), `Unreplied-Updates.apk` aktualisiert sich selbst über GitHub und nutzt das Internet für nichts anderes.
+          files: |
+            out/Unreplied.apk
+            out/Unreplied-Updates.apk
           draft: false
           prerelease: false

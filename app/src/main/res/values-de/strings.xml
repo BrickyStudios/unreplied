@@ -154,4 +154,16 @@
     <string name="nudge_label">Eigene Erinnerung nach</string>
     <string name="quiet_label">„Lange nicht geschrieben“ nach</string>
     <string name="favorites_body">Halte einen Chat gedrückt, um jemanden zum Favoriten zu machen. Favoriten bekommen eine eigene Erinnerung, wenn sie so lange warten, und erscheinen nach so vielen Wochen ohne Nachricht unter „Lange nicht geschrieben“.</string>
+    <string name="updates_title">Updates</string>
+    <string name="auto_update">Auf GitHub nach Updates suchen</string>
+    <string name="check_now">Jetzt prüfen</string>
+    <string name="update_available">Version %s ist da</string>
+    <string name="update_install">Installieren</string>
+    <string name="update_later">Später</string>
+    <string name="update_downloading">Lädt … %d %%</string>
+    <string name="update_none">Du hast die neueste Version.</string>
+    <string name="update_failed">GitHub war nicht erreichbar oder der Download ist abgebrochen. Versuch es später noch mal.</string>
+    <string name="open_releases">Release-Seite öffnen</string>
+    <string name="updates_online_body">Diese Version verbindet sich nur mit GitHub, um eine neue Version zu finden und herunterzuladen. Deine Chats verlassen das Handy nie. Die Version ganz ohne Internet ist Unreplied.apk auf derselben Seite.</string>
+    <string name="updates_offline_body">Diese Version hat keinen Internetzugriff und kann sich nicht selbst aktualisieren. Trag das Repo in Obtainium ein oder installiere Unreplied-Updates.apk von der Release-Seite über diese: Deine Daten bleiben, und sie aktualisiert sich dann selbst über GitHub.</string>
 </resources>

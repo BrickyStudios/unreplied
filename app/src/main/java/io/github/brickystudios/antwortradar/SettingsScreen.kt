@@ -30,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 
 /** Grouped list: a muted label over each group, rows parted by hairlines, the explanation as a footnote below. */
 @Composable
@@ -52,6 +54,10 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
     var replies by remember { mutableStateOf(prefs.replies.joinToString("\n")) }
     var weeks by remember { mutableIntStateOf(prefs.quietWeeks) }
     var nudge by remember { mutableIntStateOf(prefs.nudgeHours) }
+    var autoUpdate by remember { mutableStateOf(prefs.autoUpdate) }
+    val update by Updater.state.collectAsStateWithLifecycle()
+    val note by Updater.note.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
     var enabled by remember { mutableStateOf(prefs.enabled) }
     var ignored by remember { mutableStateOf(prefs.ignored) }
     var showAll by remember { mutableStateOf(false) }
@@ -183,6 +189,30 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
             }
         }
         Footnote(stringResource(R.string.log_body))
+
+        SectionLabel(stringResource(R.string.updates_title))
+        Group {
+            if (Updater.supported) {
+                Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text(stringResource(R.string.auto_update), color = Text1, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                    Switch(
+                        checked = autoUpdate, onCheckedChange = { autoUpdate = it; prefs.autoUpdate = it },
+                        colors = SwitchDefaults.colors(checkedTrackColor = Coral, checkedThumbColor = Ink),
+                    )
+                }
+                GroupDivider()
+                val u = update
+                if (u != null) TapRow(stringResource(R.string.update_available, u.release.version) + " · " + stringResource(R.string.update_install), Coral) {
+                    scope.launch { Updater.install(ctx) }
+                } else TapRow(stringResource(R.string.check_now), Coral) { scope.launch { Updater.check(ctx, manual = true) } }
+                note?.let { Text(stringResource(it), color = Text2, fontSize = 14.sp, modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 14.dp)) }
+            } else {
+                TapRow(stringResource(R.string.open_releases), Coral) {
+                    runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Releases.PAGE))) }
+                }
+            }
+        }
+        Footnote(stringResource(if (Updater.supported) R.string.updates_online_body else R.string.updates_offline_body))
 
         Group(Modifier.padding(top = 32.dp)) {
             TapRow(stringResource(if (confirmDelete) R.string.delete_confirm else R.string.delete_all), Coral) {
