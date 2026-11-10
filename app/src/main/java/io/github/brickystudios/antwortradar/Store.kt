@@ -144,6 +144,11 @@ class Prefs(private val ctx: Context) {
         get() = p.getInt("quietWeeks", 3)
         set(v) = p.edit().putInt("quietWeeks", v).apply()
 
+    /** The swipe hint goes away after the first swipe. */
+    var swiped: Boolean
+        get() = p.getBoolean("swiped", false)
+        set(v) = p.edit().putBoolean("swiped", v).apply()
+
     var onboarded: Boolean
         get() = p.getBoolean("onboarded", false)
         set(v) = p.edit().putBoolean("onboarded", v).apply()

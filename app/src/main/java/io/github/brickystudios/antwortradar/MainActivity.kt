@@ -11,6 +11,15 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +35,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.IntOffset
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import kotlinx.coroutines.delay
@@ -76,9 +87,26 @@ private fun App(sprintRequest: MutableState<Boolean>) {
     LaunchedEffect(sprintRequest.value) { if (sprintRequest.value) { screen = Screen.Sprint(null); sprintRequest.value = false } }
     BackHandler(enabled = screen != Screen.List) { screen = Screen.List }
 
-    when (val s = screen) {
-        Screen.List -> ListScreen(now, onSettings = { screen = Screen.Settings }, onSprint = { screen = Screen.Sprint(it) })
-        Screen.Settings -> SettingsScreen(now, onBack = { screen = Screen.List })
-        is Screen.Sprint -> SprintScreen(s.start, now, onExit = { screen = Screen.List })
+    val ctx = LocalContext.current
+    val still = remember { reducedMotion(ctx) }
+    // push and pop on one axis: deeper screens come in from the right and leave the way they came
+    AnimatedContent(
+        targetState = screen,
+        transitionSpec = {
+            val forward = targetState != Screen.List
+            val move = spring(dampingRatio = 1f, stiffness = SPRING_STIFFNESS, visibilityThreshold = IntOffset.VisibilityThreshold)
+            when {
+                still -> fadeIn(tween(150)) togetherWith fadeOut(tween(100))
+                forward -> slideInHorizontally(move) { it } togetherWith (slideOutHorizontally(move) { -it / 4 } + fadeOut(tween(220)))
+                else -> (slideInHorizontally(move) { -it / 4 } + fadeIn(tween(220))) togetherWith slideOutHorizontally(move) { it }
+            }.apply { targetContentZIndex = if (forward) 1f else 0f }
+        },
+        label = "screen",
+    ) { s ->
+        when (s) {
+            Screen.List -> ListScreen(now, onSettings = { screen = Screen.Settings }, onSprint = { screen = Screen.Sprint(it) })
+            Screen.Settings -> SettingsScreen(now, onBack = { screen = Screen.List })
+            is Screen.Sprint -> SprintScreen(s.start, now, onExit = { screen = Screen.List })
+        }
     }
 }

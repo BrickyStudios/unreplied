@@ -17,7 +17,7 @@
     <string name="hint_swipe">← swipe: done · → swipe: later · tap: open chat · hold: more</string>
     <string name="section_later">Later</string>
     <string name="back_at">back %s</string>
-    <string name="section_quiet">Haven\'t written in a while</string>
+    <string name="section_quiet">Haven’t written in a while</string>
     <string name="quiet_since">nothing for %s</string>
     <string name="checked_in">checked in</string>
     <string name="section_unread">Unread (your messenger shows these too)</string>
@@ -57,7 +57,7 @@
     <string name="restricted_button">Open app info</string>
     <string name="onboard_title">How it works</string>
     <string name="onboard_1">1. Read your messages as usual.</string>
-    <string name="onboard_2">2. Opened a chat but didn\'t answer? It lands here.</string>
+    <string name="onboard_2">2. Opened a chat but didn’t answer? It lands here.</string>
     <string name="onboard_3">3. Reply, swipe it away, or push it to later. One reminder a day, never one per message.</string>
     <string name="onboard_ok">Got it</string>
 
@@ -76,7 +76,7 @@
         <item quantity="other">%d chats answered or put away.</item>
     </plurals>
     <string name="sent_ok">Sent</string>
-    <string name="send_failed">Couldn\'t send, the text is copied</string>
+    <string name="send_failed">Couldn’t send, the text is copied</string>
     <string name="no_reply_button">No reply button for this chat right now. Unreplied only gets one from a fresh notification. Copy the text and send it in the chat.</string>
 
     <!-- settings -->
@@ -92,7 +92,7 @@
     <string name="names_hint">e.g. Alex, Al</string>
     <string name="settings_replies">Quick replies</string>
     <string name="replies_body">One per line. You can pick them when you reply from Unreplied.</string>
-    <string name="settings_quiet">Haven\'t written in a while</string>
+    <string name="settings_quiet">Haven’t written in a while</string>
     <string name="quiet_body">Favorites show up here after this long without a message in either direction. Mark someone as favorite by holding their chat.</string>
     <plurals name="weeks">
         <item quantity="one">%d week</item>
@@ -126,7 +126,7 @@
         <item quantity="one">%d person is waiting for you</item>
         <item quantity="other">%d people are waiting for you</item>
     </plurals>
-    <string name="summary_quiet">Haven\'t written in a while: %s</string>
+    <string name="summary_quiet">Haven’t written in a while: %s</string>
     <string name="summary_quiet_title">Time to check in</string>
     <string name="nobody_waiting">Nobody is waiting</string>
     <string name="widget_empty">All answered</string>
@@ -134,7 +134,7 @@
     <string name="tile_waiting">%d waiting</string>
     <string name="tile_none">nobody waiting</string>
 
-    <string name="default_replies">Saw it, I\'ll get back to you tonight.\nSounds good!\nSorry for the late reply!\nCan I call you later?</string>
+    <string name="default_replies">Saw it, I’ll get back to you tonight.\nSounds good!\nSorry for the late reply!\nCan I call you later?</string>
     <string name="ev_late">(%d s late)</string>
     <string name="ev_connected">connected to notifications</string>
     <string name="ev_disconnected">disconnected from notifications, reconnecting</string>
@@ -142,5 +142,5 @@
     <string name="connection_ok">Connected: new messages show up within a second.</string>
     <string name="connection_off">Not connected right now. Android reconnects it; until then new messages show up late.</string>
     <string name="battery_body">Some phones put apps to sleep to save battery and Unreplied then hears of messages late. Allowing it to run in the background fixes that. It uses next to no battery.</string>
-    <string name="battery_button">Don\'t put Unreplied to sleep</string>
+    <string name="battery_button">Don’t put Unreplied to sleep</string>
 </resources>

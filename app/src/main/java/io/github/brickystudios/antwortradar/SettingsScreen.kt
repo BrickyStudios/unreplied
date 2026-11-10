@@ -6,17 +6,21 @@ import android.net.Uri
 import android.os.PowerManager
 import android.provider.Settings
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -29,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -37,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
+/** Grouped list: a muted label over each group, rows parted by hairlines, the explanation as a footnote below. */
 @Composable
 fun SettingsScreen(now: Long, onBack: () -> Unit) {
     val ctx = LocalContext.current
@@ -51,54 +57,50 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
     var confirmDelete by remember { mutableStateOf(false) }
     val log by Store.log.collectAsStateWithLifecycle()
     val installed = remember { MESSENGERS.filter { ctx.packageManager.getLaunchIntentForPackage(it.pkg) != null } }
+    val sleeping = !ctx.getSystemService(PowerManager::class.java).isIgnoringBatteryOptimizations(ctx.packageName)
+    val field = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = Color.Transparent, focusedBorderColor = Coral)
 
-    Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            TextButton(onClick = onBack) { Text("← " + stringResource(R.string.back), color = Coral) }
-            Text(stringResource(R.string.settings), color = Text1, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp).padding(bottom = 32.dp)) {
+        Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back), tint = Text1) }
+            Text(stringResource(R.string.settings), color = Text1, fontSize = 28.sp, fontWeight = FontWeight.Bold, letterSpacing = (-0.4).sp)
         }
 
-        Panel {
-            // why messages may arrive late: an unbound listener or a battery saver that stops it
-            Heading(stringResource(R.string.settings_connection))
-            Body(stringResource(if (Live.connected) R.string.connection_ok else R.string.connection_off), Modifier.padding(top = 4.dp))
-            val power = ctx.getSystemService(PowerManager::class.java)
-            if (!power.isIgnoringBatteryOptimizations(ctx.packageName)) {
-                Body(stringResource(R.string.battery_body), Modifier.padding(top = 8.dp))
-                OutlinedButton(
-                    onClick = {
-                        @SuppressLint("BatteryLife")
-                        val i = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:" + ctx.packageName))
-                        runCatching { ctx.startActivity(i) }
-                    },
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                ) { Text(stringResource(R.string.battery_button), color = Text1) }
+        // why messages may arrive late: an unbound listener or a battery saver that stops it
+        SectionLabel(stringResource(R.string.settings_connection))
+        Group {
+            Text(stringResource(if (Live.connected) R.string.connection_ok else R.string.connection_off), color = Text1, fontSize = 15.sp, modifier = Modifier.padding(16.dp))
+            if (sleeping) {
+                GroupDivider()
+                TapRow(stringResource(R.string.battery_button), Coral) {
+                    @SuppressLint("BatteryLife")
+                    val i = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:" + ctx.packageName))
+                    runCatching { ctx.startActivity(i) }
+                }
             }
         }
+        if (sleeping) Footnote(stringResource(R.string.battery_body))
 
-        Panel {
-            Heading(stringResource(R.string.settings_reminder))
-            Row(verticalAlignment = Alignment.CenterVertically) {
+        SectionLabel(stringResource(R.string.settings_reminder))
+        Group {
+            Row(Modifier.padding(horizontal = 8.dp).heightIn(min = 56.dp), verticalAlignment = Alignment.CenterVertically) {
                 TextButton(onClick = { hour = (hour + 23) % 24; prefs.hour = hour; Summary.schedule(ctx) }) { Text("−", color = Coral, fontSize = 22.sp) }
-                Text(stringResource(R.string.hour_fmt, hour), color = Text1, fontSize = 18.sp)
+                Text(stringResource(R.string.hour_fmt, hour), color = Text1, fontSize = 17.sp)
                 TextButton(onClick = { hour = (hour + 1) % 24; prefs.hour = hour; Summary.schedule(ctx) }) { Text("+", color = Coral, fontSize = 22.sp) }
-                Spacer(Modifier.weight(1f))
-                TextButton(onClick = { Summary.show(ctx) }) { Text(stringResource(R.string.test_now), color = Coral) }
             }
+            GroupDivider()
+            TapRow(stringResource(R.string.test_now), Coral) { Summary.show(ctx) }
         }
 
-        Panel {
-            Heading(stringResource(R.string.settings_messengers))
+        SectionLabel(stringResource(R.string.settings_messengers))
+        Group {
             val shown = if (showAll || installed.isEmpty()) MESSENGERS else installed
-            if (installed.isEmpty()) Body(stringResource(R.string.none_installed), Modifier.padding(top = 4.dp))
-            shown.forEach { m ->
-                Row(Modifier.fillMaxWidth().padding(top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+            shown.forEachIndexed { i, m ->
+                if (i > 0) GroupDivider()
+                Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text(m.label, color = Text1)
-                        if (!m.onByDefault) Body(stringResource(R.string.untested))
+                        Text(m.label, color = Text1, fontSize = 16.sp)
+                        if (!m.onByDefault) Text(stringResource(R.string.untested), color = Text2, fontSize = 13.sp)
                     }
                     Switch(
                         checked = m.pkg in enabled,
@@ -107,73 +109,86 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
                     )
                 }
             }
-            if (!showAll && installed.isNotEmpty() && installed.size < MESSENGERS.size)
-                TextButton(onClick = { showAll = true }) { Text(stringResource(R.string.show_all), color = Coral) }
+            if (!showAll && installed.isNotEmpty() && installed.size < MESSENGERS.size) {
+                GroupDivider()
+                TapRow(stringResource(R.string.show_all), Coral) { showAll = true }
+            }
         }
+        if (installed.isEmpty()) Footnote(stringResource(R.string.none_installed))
 
-        Panel {
-            Heading(stringResource(R.string.settings_groups))
-            Body(stringResource(R.string.groups_body))
+        SectionLabel(stringResource(R.string.settings_groups))
+        Group {
             OutlinedTextField(
-                value = names, onValueChange = { names = it; prefs.names = it },
-                placeholder = { Text(stringResource(R.string.names_hint)) }, singleLine = true,
-                modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
+                value = names, onValueChange = { names = it; prefs.names = it }, colors = field,
+                placeholder = { Text(stringResource(R.string.names_hint)) }, singleLine = true, modifier = Modifier.fillMaxWidth(),
             )
         }
+        Footnote(stringResource(R.string.groups_body))
 
-        Panel {
-            Heading(stringResource(R.string.settings_replies))
-            Body(stringResource(R.string.replies_body))
-            OutlinedTextField(
-                value = replies, onValueChange = { replies = it; prefs.replies = it.lines() },
-                modifier = Modifier.fillMaxWidth().padding(top = 6.dp), minLines = 3,
-            )
+        SectionLabel(stringResource(R.string.settings_replies))
+        Group {
+            OutlinedTextField(value = replies, onValueChange = { replies = it; prefs.replies = it.lines() }, colors = field, modifier = Modifier.fillMaxWidth(), minLines = 3)
         }
+        Footnote(stringResource(R.string.replies_body))
 
-        Panel {
-            Heading(stringResource(R.string.settings_quiet))
-            Body(stringResource(R.string.quiet_body))
-            Row(verticalAlignment = Alignment.CenterVertically) {
+        SectionLabel(stringResource(R.string.settings_quiet))
+        Group {
+            Row(Modifier.padding(horizontal = 8.dp).heightIn(min = 56.dp), verticalAlignment = Alignment.CenterVertically) {
                 TextButton(onClick = { weeks = (weeks - 1).coerceAtLeast(1); prefs.quietWeeks = weeks }) { Text("−", color = Coral, fontSize = 22.sp) }
-                Text(pluralStringResource(R.plurals.weeks, weeks, weeks), color = Text1, fontSize = 18.sp)
+                Text(pluralStringResource(R.plurals.weeks, weeks, weeks), color = Text1, fontSize = 17.sp)
                 TextButton(onClick = { weeks = (weeks + 1).coerceAtMost(26); prefs.quietWeeks = weeks }) { Text("+", color = Coral, fontSize = 22.sp) }
             }
         }
+        Footnote(stringResource(R.string.quiet_body))
 
-        Panel {
-            Heading(stringResource(R.string.settings_ignored))
-            if (ignored.isEmpty()) Body(stringResource(R.string.none))
-            ignored.forEach { (key, name) ->
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("$name · ${messengerLabel(key.substringBefore('|'))}", color = Text1, modifier = Modifier.weight(1f))
+        SectionLabel(stringResource(R.string.settings_ignored))
+        Group {
+            if (ignored.isEmpty()) Text(stringResource(R.string.none), color = Text2, fontSize = 15.sp, modifier = Modifier.padding(16.dp))
+            ignored.entries.forEachIndexed { i, (key, name) ->
+                if (i > 0) GroupDivider()
+                Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 4.dp).heightIn(min = 52.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text("$name  ${messengerLabel(key.substringBefore('|'))}", color = Text1, modifier = Modifier.weight(1f))
                     TextButton(onClick = { ignored = ignored - key; prefs.ignored = ignored }) { Text(stringResource(R.string.unignore), color = Coral) }
                 }
             }
         }
 
-        Panel {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Heading(stringResource(R.string.settings_log), Modifier.weight(1f))
-                if (log.isNotEmpty()) TextButton(onClick = Store::clearLog) { Text(stringResource(R.string.clear), color = Coral) }
+        Row(verticalAlignment = Alignment.Bottom) {
+            SectionLabel(stringResource(R.string.settings_log), Modifier.weight(1f))
+            if (log.isNotEmpty()) TextButton(onClick = Store::clearLog) { Text(stringResource(R.string.clear), color = Coral) }
+        }
+        Group {
+            if (log.isEmpty()) Text(stringResource(R.string.log_empty), color = Text2, fontSize = 15.sp, modifier = Modifier.padding(16.dp))
+            log.forEachIndexed { i, l ->
+                if (i > 0) GroupDivider()
+                Row(Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
+                    Text(shortTime(ctx, l.time, now), color = Text2, fontSize = 13.sp, modifier = Modifier.padding(end = 12.dp))
+                    Text("${l.name}: ${evText(ctx, l)}", color = Text1, fontSize = 13.sp)
+                }
             }
-            Body(stringResource(R.string.log_body))
-            if (log.isEmpty()) Body(stringResource(R.string.log_empty), Modifier.padding(top = 8.dp))
-            log.forEach {
-                Text("${shortTime(ctx, it.time, now)}  ${it.name}: ${evText(ctx, it)}", color = Text1, fontSize = 12.sp, modifier = Modifier.padding(top = 6.dp))
+        }
+        Footnote(stringResource(R.string.log_body))
+
+        Group(Modifier.padding(top = 32.dp)) {
+            TapRow(stringResource(if (confirmDelete) R.string.delete_confirm else R.string.delete_all), Coral) {
+                if (!confirmDelete) { confirmDelete = true; return@TapRow }
+                Store.clearAll(); confirmDelete = false
+                Toast.makeText(ctx, R.string.deleted, Toast.LENGTH_SHORT).show()
             }
         }
 
-        OutlinedButton(
-            onClick = {
-                if (!confirmDelete) { confirmDelete = true; return@OutlinedButton }
-                Store.clearAll(); confirmDelete = false
-                Toast.makeText(ctx, R.string.deleted, Toast.LENGTH_SHORT).show()
-            },
-            modifier = Modifier.fillMaxWidth(),
-        ) { Text(stringResource(if (confirmDelete) R.string.delete_confirm else R.string.delete_all), color = if (confirmDelete) Coral else Text1) }
-
-        TextButton(onClick = {
-            runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/BrickyStudios/unreplied"))) }
-        }) { Text(stringResource(R.string.about, BuildConfig.VERSION_NAME), color = Text2, fontSize = 12.sp) }
+        TextButton(
+            onClick = { runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/BrickyStudios/unreplied"))) } },
+            modifier = Modifier.padding(top = 16.dp),
+        ) { Text(stringResource(R.string.about, BuildConfig.VERSION_NAME), color = Text2, fontSize = 12.sp) }
     }
+}
+
+/** A full-width tappable row inside a group: the whole row is the target, at least 52dp tall. */
+@Composable
+private fun TapRow(label: String, color: Color, onClick: () -> Unit) {
+    Text(
+        label, color = color, fontSize = 16.sp,
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).heightIn(min = 52.dp).padding(horizontal = 16.dp, vertical = 15.dp),
+    )
 }

@@ -49,7 +49,7 @@
     <string name="access_button">Zugriff erlauben</string>
     <string name="restricted_help">Schalter ausgegraut oder Android meldet „Eingeschränkte Einstellung“? Das sperrt Android bei Apps, die aus einer Datei installiert wurden. Öffne die App-Info, tippe oben rechts auf ⋮, wähle „Eingeschränkte Einstellungen zulassen“ und versuch es dann noch mal.</string>
     <string name="restricted_button">App-Info öffnen</string>
-    <string name="onboard_title">So funktioniert\'s</string>
+    <string name="onboard_title">So funktioniert’s</string>
     <string name="onboard_1">1. Lies deine Nachrichten wie immer.</string>
     <string name="onboard_2">2. Chat geöffnet, aber nicht geantwortet? Dann landet er hier.</string>
     <string name="onboard_3">3. Antworten, wegwischen oder auf später schieben. Eine Erinnerung am Tag, nie eine pro Nachricht.</string>
@@ -124,7 +124,7 @@
     <string name="tile_waiting">%d warten</string>
     <string name="tile_none">niemand wartet</string>
 
-    <string name="default_replies">Hab\'s gesehen, ich melde mich heute Abend.\nKlingt gut!\nSorry für die späte Antwort!\nKann ich dich später anrufen?</string>
+    <string name="default_replies">Hab’s gesehen, ich melde mich heute Abend.\nKlingt gut!\nSorry für die späte Antwort!\nKann ich dich später anrufen?</string>
     <string name="ev_late">(%d s verspätet)</string>
     <string name="ev_connected">mit den Benachrichtigungen verbunden</string>
     <string name="ev_disconnected">Verbindung getrennt, wird neu verbunden</string>
