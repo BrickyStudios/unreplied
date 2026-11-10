@@ -138,4 +138,83 @@ class RadarTest {
         assertEquals(true, Radar.isChat(category = null, ongoing = false, messagingStyle = true))
         assertEquals(false, Radar.isChat(category = null, ongoing = false, messagingStyle = false))
     }
+
+    @Test fun replyInsideTheMessengerRestartsTheWait() {
+        val read = Radar.removed(Radar.posted(null, msg("Hi", 100), emptyList()), 8, 200)!!
+        // they write again; the history shows your answer at 300 and their new message at 400
+        val again = Radar.posted(read, msg("Danke!", 450).copy(repliedAt = 300, waitingSince = 400), emptyList())!!
+        assertEquals(400, again.since)
+        // no answer of yours in the history: the old wait goes on
+        val still = Radar.posted(read, msg("Hallo??", 450).copy(waitingSince = 400), emptyList())!!
+        assertEquals(100, still.since)
+        // an answer older than the wait proves nothing
+        val older = Radar.posted(read, msg("Hallo??", 450).copy(repliedAt = 50, waitingSince = 400), emptyList())!!
+        assertEquals(100, older.since)
+    }
+
+    @Test fun newChatWaitsSinceTheirFirstUnansweredMessage() {
+        val e = Radar.posted(null, msg("Und?", 500).copy(waitingSince = 300), emptyList())!!
+        assertEquals(300, e.since)
+        assertEquals(500, Radar.posted(null, msg("Hi", 500).copy(waitingSince = 900), emptyList())!!.since)
+    }
+
+    @Test fun snoozesComeDueOnce() {
+        val read = Radar.removed(Radar.posted(null, msg("Hi", 100), emptyList()), 8, 200)!!
+        val later = Radar.snooze(read, 1_000)
+        assertTrue(Radar.dueSnoozes(listOf(later), 999).isEmpty())
+        assertEquals(listOf(later), Radar.dueSnoozes(listOf(later), 1_000))
+        assertTrue(Radar.dueSnoozes(listOf(later.copy(snoozeUntil = 0)), 2_000).isEmpty())
+        assertEquals(1_000L, Radar.nextReminder(listOf(later), emptySet(), 500, 4))
+        // ran out while the phone was off: due right now, not never
+        assertEquals(5_000L, Radar.nextReminder(listOf(later), emptySet(), 5_000, 4))
+    }
+
+    @Test fun favoritesAreNudgedOncePerWait() {
+        val t = Radar.DAY // real timestamps are never 0, the default of nudgedAt
+        val read = Radar.removed(Radar.posted(null, msg("Hi", t), emptyList()), 8, t + 10)!!
+        val fav = setOf(key)
+        assertTrue(Radar.dueFavorites(listOf(read), fav, t + 3 * Radar.HOUR, 4).isEmpty())
+        assertEquals(t + 4 * Radar.HOUR, Radar.nextReminder(listOf(read), fav, t + 3 * Radar.HOUR, 4))
+        assertEquals(listOf(read), Radar.dueFavorites(listOf(read), fav, t + 4 * Radar.HOUR, 4))
+        assertTrue(Radar.dueFavorites(listOf(read), emptySet(), t + 9 * Radar.HOUR, 4).isEmpty())
+        val nudged = read.copy(nudgedAt = t + 4 * Radar.HOUR)
+        assertTrue(Radar.dueFavorites(listOf(nudged), fav, t + 9 * Radar.HOUR, 4).isEmpty())
+        assertNull(Radar.nextReminder(listOf(nudged), fav, t + 9 * Radar.HOUR, 4))
+    }
+
+    @Test fun weekStatsCountAndAverage() {
+        val now = 10 * Radar.DAY
+        val a = Entry("w|a", "A", "", false, since = now - 3 * Radar.HOUR, last = 0, state = State.DONE, doneAt = now - Radar.HOUR)
+        val b = Entry("w|b", "B", "", false, since = now - 9 * Radar.HOUR, last = 0, state = State.DONE, doneAt = now - 5 * Radar.HOUR)
+        val old = Entry("w|c", "C", "", false, since = 0, last = 0, state = State.DONE, doneAt = Radar.DAY)
+        assertEquals(2 to 3 * Radar.HOUR, Radar.weekStats(listOf(a, b, old), now))
+        assertEquals(0 to 0L, Radar.weekStats(emptyList(), now))
+    }
+
+    @Test fun detectionPerMessengerFromTheLog() {
+        val log = listOf( // newest first, as the store keeps it
+            LogLine(30, "Lisa", Ev.REMOVED, 10, "org.thoughtcrime.securesms"),
+            LogLine(20, "Tom", Ev.READ, 8, "com.whatsapp"),
+            LogLine(10, "Mia", Ev.REMOVED, 18, "com.whatsapp"),
+            LogLine(5, "Unreplied", Ev.CONNECTED),
+        )
+        val d = Radar.detection(log)
+        assertEquals(true to 8, d["com.whatsapp"])
+        assertEquals(false to 10, d["org.thoughtcrime.securesms"])
+        assertEquals(2, d.size)
+    }
+
+    @Test fun diagnosticsHideNames() {
+        val lines = Diagnostics.anonymize(listOf(
+            LogLine(0, "Lisa Müller", Ev.READ, 8, "com.whatsapp"),
+            LogLine(0, "Tom", Ev.NEW, 0, "com.whatsapp"),
+            LogLine(0, "Lisa Müller", Ev.NEW, 3, "com.whatsapp"),
+            LogLine(0, "Unreplied", Ev.CONNECTED),
+        ))
+        assertTrue(lines.none { "Lisa" in it || "Tom" in it })
+        assertTrue(lines[0].contains("Chat 1") && lines[0].endsWith("READ 8"))
+        assertTrue(lines[1].contains("Chat 2"))
+        assertTrue(lines[2].contains("Chat 1"))
+        assertTrue(lines[3].contains("listener"))
+    }
 }

@@ -133,4 +133,25 @@
     <string name="connection_off">Gerade nicht verbunden. Android verbindet neu, bis dahin kommen neue Nachrichten verspätet an.</string>
     <string name="battery_body">Manche Handys schicken Apps zum Akkusparen schlafen, dann erfährt Unreplied erst spät von Nachrichten. Wenn du die App im Hintergrund laufen lässt, ist das behoben. Sie braucht dafür kaum Akku.</string>
     <string name="battery_button">Unreplied nicht schlafen legen</string>
+    <string name="reminder_back">%s wartet wieder</string>
+    <string name="reminder_favorite">%1$s wartet seit %2$s</string>
+    <string name="channel_reminders">Erinnerungen</string>
+    <plurals name="week_recap">
+        <item quantity="one">Diese Woche: %1$d beantwortet, im Schnitt nach %2$s.</item>
+        <item quantity="other">Diese Woche: %1$d beantwortet, im Schnitt nach %2$s.</item>
+    </plurals>
+    <string name="recap_title">Deine Woche</string>
+    <string name="selftest_title">Lese-Erkennung prüfen</string>
+    <string name="selftest_body">Öffne einen Chat mit Benachrichtigung und komm zurück. Hier steht dann, ob Unreplied es bemerkt hat.</string>
+    <string name="selftest_waiting">Warte, bis du einen Chat öffnest …</string>
+    <string name="selftest_ok">%1$s: klappt (Grund %2$d)</string>
+    <string name="selftest_bad">%1$s: Grund %2$d zählt nicht als gelesen</string>
+    <string name="selftest_bad_help">Kopiere in den Einstellungen die Diagnose und eröffne ein Issue, dann kann dieser Messenger unterstützt werden.</string>
+    <string name="selftest_done">Fertig</string>
+    <string name="diagnostics">Diagnose für einen Fehlerbericht kopieren</string>
+    <string name="diagnostics_copied">Ohne Namen kopiert. Füge es im Issue ein.</string>
+    <string name="settings_favorites">Favoriten</string>
+    <string name="nudge_label">Eigene Erinnerung nach</string>
+    <string name="quiet_label">„Lange nicht geschrieben“ nach</string>
+    <string name="favorites_body">Halte einen Chat gedrückt, um jemanden zum Favoriten zu machen. Favoriten bekommen eine eigene Erinnerung, wenn sie so lange warten, und erscheinen nach so vielen Wochen ohne Nachricht unter „Lange nicht geschrieben“.</string>
 </resources>

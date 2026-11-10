@@ -58,6 +58,7 @@
         </service>
 
         <receiver android:name=".SummaryReceiver" android:exported="false" />
+        <receiver android:name=".ReminderReceiver" android:exported="false" />
 
         <receiver android:name=".RadarWidget" android:exported="false" android:label="@string/app_name">
             <intent-filter>

@@ -1,0 +1,6 @@
+- Read-detection check on first run
+- Copy diagnostics (without names) for bug reports
+- A notification when "later" runs out
+- Favorites get their own reminder
+- Sunday recap in the daily reminder
+- Waiting time restarts when you answered inside the messenger

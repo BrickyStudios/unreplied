@@ -1,0 +1,6 @@
+- Prüfung der Lese-Erkennung beim ersten Start
+- Diagnose ohne Namen für Fehlerberichte kopieren
+- Benachrichtigung, wenn „Später“ abläuft
+- Eigene Erinnerung für Favoriten
+- Sonntags Wochenrückblick in der Tagesmeldung
+- Wartezeit startet neu, wenn du im Messenger geantwortet hast

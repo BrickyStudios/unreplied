@@ -58,6 +58,8 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
     var triedAccess by remember { mutableStateOf(false) }
     var onboarded by remember { mutableStateOf(prefs.onboarded) }
     var swiped by remember { mutableStateOf(prefs.swiped) }
+    var selfTestDone by remember { mutableStateOf(prefs.selfTestDone) }
+    val log by Store.log.collectAsStateWithLifecycle()
     LifecycleResumeEffect(Unit) {
         allowed = ctx.packageName in NotificationManagerCompat.getEnabledListenerPackages(ctx)
         onPauseOrDispose {}
@@ -131,6 +133,9 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
                 }
             }
         }
+        if (allowed && onboarded && !selfTestDone) item(key = "selftest") {
+            SelfTest(Radar.detection(log)) { prefs.selfTestDone = true; selfTestDone = true }
+        }
         if (waiting.size >= 2) item(key = "sprint") {
             Button(
                 onClick = { onSprint(null) }, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).padding(bottom = 4.dp).then(moving()),
@@ -185,6 +190,27 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
             }
         }
         item(key = "note") { Footnote(stringResource(R.string.stored_note), Modifier.padding(vertical = 16.dp)) }
+    }
+}
+
+/** First run: proof on this very phone that opening a chat is noticed, per messenger. */
+@Composable
+private fun SelfTest(result: Map<String, Pair<Boolean, Int>>, onDone: () -> Unit) {
+    Group {
+        Column(Modifier.padding(20.dp)) {
+            Text(stringResource(R.string.selftest_title), color = Text1, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.selftest_body), color = Text2, fontSize = 14.sp, modifier = Modifier.padding(top = 6.dp))
+            if (result.isEmpty()) Text(stringResource(R.string.selftest_waiting), color = Text2, fontSize = 14.sp, modifier = Modifier.padding(top = 12.dp))
+            result.forEach { (app, r) ->
+                val label = messengerLabel(app)
+                Text(
+                    if (r.first) stringResource(R.string.selftest_ok, label, r.second) else stringResource(R.string.selftest_bad, label, r.second),
+                    color = if (r.first) Coral else Text1, fontSize = 15.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(top = 12.dp),
+                )
+            }
+            if (result.values.any { !it.first }) Text(stringResource(R.string.selftest_bad_help), color = Text2, fontSize = 13.sp, modifier = Modifier.padding(top = 8.dp))
+            TextButton(onClick = onDone, modifier = Modifier.align(Alignment.End)) { Text(stringResource(R.string.selftest_done), color = Coral) }
+        }
     }
 }
 

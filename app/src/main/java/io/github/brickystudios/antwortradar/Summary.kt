@@ -47,7 +47,11 @@ object Summary {
         val now = System.currentTimeMillis()
         val waiting = Radar.waiting(Store.entries.value.values, now)
         val quiet = Radar.quiet(Store.contacts.value.values, now, Prefs(ctx).quietWeeks)
-        if (waiting.isEmpty() && quiet.isEmpty()) return
+        // Sundays add the week in numbers: progress the person can see
+        val (count, avg) = Radar.weekStats(Store.entries.value.values, now)
+        val sunday = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
+        val recap = if (sunday && count > 0) ctx.resources.getQuantityString(R.plurals.week_recap, count, count, ageText(ctx, avg)) else null
+        if (waiting.isEmpty() && quiet.isEmpty() && recap == null) return
         val nm = ctx.getSystemService(NotificationManager::class.java)
         nm.createNotificationChannel(NotificationChannel(CHANNEL, ctx.getString(R.string.channel_summary), NotificationManager.IMPORTANCE_DEFAULT))
         val open = PendingIntent.getActivity(ctx, 0, Intent(ctx, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
@@ -60,9 +64,13 @@ object Summary {
         val lines = listOfNotNull(
             waitingText(ctx, waiting, now).takeIf { waiting.isNotEmpty() },
             ctx.getString(R.string.summary_quiet, quiet.joinToString(", ") { it.name }).takeIf { quiet.isNotEmpty() },
+            recap,
         ).joinToString("\n")
-        val title = if (waiting.isEmpty()) ctx.getString(R.string.summary_quiet_title)
-        else ctx.resources.getQuantityString(R.plurals.summary_title, waiting.size, waiting.size)
+        val title = when {
+            waiting.isNotEmpty() -> ctx.resources.getQuantityString(R.plurals.summary_title, waiting.size, waiting.size)
+            quiet.isNotEmpty() -> ctx.getString(R.string.summary_quiet_title)
+            else -> ctx.getString(R.string.recap_title)
+        }
         val b = NotificationCompat.Builder(ctx, CHANNEL)
             .setSmallIcon(R.drawable.ic_stat)
             .setContentTitle(title)

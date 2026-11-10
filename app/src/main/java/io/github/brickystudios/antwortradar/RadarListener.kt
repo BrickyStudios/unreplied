@@ -18,6 +18,7 @@ class RadarListener : NotificationListenerService() {
         Live.connected = true
         Store.note(getString(R.string.app_name), Ev.CONNECTED)
         Summary.schedule(this) // the system binds this service after every boot, so no boot receiver is needed
+        Reminders.schedule(this) // alarms do not survive a reboot
         // chats that arrived while the radar was off still count as unread
         runCatching { activeNotifications }.getOrNull()?.forEach { onNotificationPosted(it) }
     }
@@ -81,11 +82,15 @@ class RadarListener : NotificationListenerService() {
         val n = sbn.notification
         val title = title(n) ?: return null
         val style = NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(n)
-        val last = style?.messages?.lastOrNull()
+        val msgs = style?.messages.orEmpty()
+        val last = msgs.lastOrNull()
         val text = (last?.text ?: n.extras.getCharSequence(Notification.EXTRA_TEXT) ?: "").toString()
         // in MessagingStyle your own messages have no sender, or the device user as sender
-        val fromMe = last != null && (last.person == null || last.person?.name == style.user.name)
+        fun mine(x: NotificationCompat.MessagingStyle.Message) = x.person == null || x.person?.name == style?.user?.name
+        val fromMe = last != null && mine(last)
+        val repliedAt = msgs.filter(::mine).maxOfOrNull { it.timestamp }
+        val waitingSince = msgs.filter { !mine(it) && (repliedAt == null || it.timestamp > repliedAt) }.minOfOrNull { it.timestamp }
         val group = style?.isGroupConversation ?: n.extras.getBoolean("android.isGroupConversation") // EXTRA_IS_GROUP_CONVERSATION, the constant is API 28+
-        return Incoming(key(sbn, title), title, text, group, fromMe, last?.timestamp ?: sbn.postTime)
+        return Incoming(key(sbn, title), title, text, group, fromMe, last?.timestamp ?: sbn.postTime, repliedAt, waitingSince)
     }
 }

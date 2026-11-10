@@ -143,4 +143,25 @@
     <string name="connection_off">Not connected right now. Android reconnects it; until then new messages show up late.</string>
     <string name="battery_body">Some phones put apps to sleep to save battery and Unreplied then hears of messages late. Allowing it to run in the background fixes that. It uses next to no battery.</string>
     <string name="battery_button">Don’t put Unreplied to sleep</string>
+    <string name="reminder_back">%s is waiting again</string>
+    <string name="reminder_favorite">%1$s has been waiting for %2$s</string>
+    <string name="channel_reminders">Reminders</string>
+    <plurals name="week_recap">
+        <item quantity="one">This week: %1$d answered, after %2$s on average.</item>
+        <item quantity="other">This week: %1$d answered, after %2$s on average.</item>
+    </plurals>
+    <string name="recap_title">Your week</string>
+    <string name="selftest_title">Check read detection</string>
+    <string name="selftest_body">Open a chat that has a notification, then come back. This card shows whether Unreplied noticed.</string>
+    <string name="selftest_waiting">Waiting for you to open a chat…</string>
+    <string name="selftest_ok">%1$s: works (code %2$d)</string>
+    <string name="selftest_bad">%1$s: code %2$d doesn’t count as read</string>
+    <string name="selftest_bad_help">Copy the diagnostics in the settings and open an issue, so this messenger can be supported.</string>
+    <string name="selftest_done">Done</string>
+    <string name="diagnostics">Copy diagnostics for a bug report</string>
+    <string name="diagnostics_copied">Copied without names. Paste it into the issue.</string>
+    <string name="settings_favorites">Favorites</string>
+    <string name="nudge_label">Own reminder after</string>
+    <string name="quiet_label">“Haven’t written” after</string>
+    <string name="favorites_body">Hold a chat to make someone a favorite. Favorites get their own reminder once they have waited this long, and show up under “Haven’t written in a while” after this many weeks without a message.</string>
 </resources>

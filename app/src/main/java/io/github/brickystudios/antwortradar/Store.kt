@@ -13,7 +13,7 @@ import java.util.concurrent.Executors
  */
 enum class Ev { NEW, READ, REMOVED, ANSWERED, DONE, REPLIED, SNOOZED, IGNORED, CONNECTED, DISCONNECTED }
 
-data class LogLine(val time: Long, val name: String, val ev: Ev, val reason: Int = 0)
+data class LogLine(val time: Long, val name: String, val ev: Ev, val reason: Int = 0, val app: String = "")
 
 /**
  * Everything the radar knows, in one JSON file in the app's private storage. Listener, UI, tile and widget share
@@ -38,7 +38,7 @@ object Store {
             entries.value = o.getJSONArray("entries").objects().map { it.toEntry() }.associateBy { it.key }
             contacts.value = (o.optJSONArray("contacts") ?: JSONArray()).objects().map { it.toContact() }.associateBy { it.key }
             log.value = o.getJSONArray("log").objects().filter { it.has("ev") }
-                .map { LogLine(it.getLong("time"), it.getString("name"), Ev.valueOf(it.getString("ev")), it.optInt("reason")) }
+                .map { LogLine(it.getLong("time"), it.getString("name"), Ev.valueOf(it.getString("ev")), it.optInt("reason"), it.optString("app")) }
         } // a broken file starts empty instead of crashing the listener
     }
 
@@ -48,7 +48,7 @@ object Store {
         if (new == old && ev == null) return
         val now = System.currentTimeMillis()
         entries.value = Radar.prune((entries.value - key).values + listOfNotNull(new), now).associateBy { it.key }
-        if (ev != null) log.value = (listOf(LogLine(now, new?.name ?: old?.name ?: key, ev, reason)) + log.value).take(LOG_MAX)
+        if (ev != null) log.value = (listOf(LogLine(now, new?.name ?: old?.name ?: key, ev, reason, key.substringBefore('|'))) + log.value).take(LOG_MAX)
         save()
     }
 
@@ -81,7 +81,7 @@ object Store {
             .put("entries", JSONArray(entries.value.values.map { it.toJson() }))
             .put("contacts", JSONArray(contacts.value.values.map { it.toJson() }))
             .put("log", JSONArray(log.value.map {
-                JSONObject().put("time", it.time).put("name", it.name).put("ev", it.ev.name).put("reason", it.reason)
+                JSONObject().put("time", it.time).put("name", it.name).put("ev", it.ev.name).put("reason", it.reason).put("app", it.app)
             }))
             .toString()
         writer.execute {
@@ -90,20 +90,21 @@ object Store {
             tmp.renameTo(f) // atomic swap: a crash mid-write never leaves half a file
         }
         Widgets.refresh(app)
+        Reminders.schedule(app)
     }
 
     private fun JSONArray.objects() = (0 until length()).map { getJSONObject(it) }
 
     private fun Entry.toJson() = JSONObject().put("key", key).put("name", name).put("preview", preview)
         .put("group", group).put("since", since).put("last", last).put("state", state.name)
-        .put("readAt", readAt).put("doneAt", doneAt).put("snoozeUntil", snoozeUntil)
+        .put("readAt", readAt).put("doneAt", doneAt).put("snoozeUntil", snoozeUntil).put("nudgedAt", nudgedAt)
 
     private fun JSONObject.toEntry() = Entry(
         // v0.1 stored WhatsApp chats without the "<package>|" prefix
         getString("key").let { if ('|' in it) it else Radar.key("com.whatsapp", it) },
         getString("name"), getString("preview"), getBoolean("group"),
         getLong("since"), getLong("last"), State.valueOf(getString("state")), optLong("readAt"), optLong("doneAt"),
-        optLong("snoozeUntil"),
+        optLong("snoozeUntil"), optLong("nudgedAt"),
     )
 
     private fun Contact.toJson() = JSONObject().put("key", key).put("name", name).put("last", last).put("favorite", favorite)
@@ -148,6 +149,16 @@ class Prefs(private val ctx: Context) {
     var swiped: Boolean
         get() = p.getBoolean("swiped", false)
         set(v) = p.edit().putBoolean("swiped", v).apply()
+
+    /** Favorites get their own reminder once they have waited this long. */
+    var nudgeHours: Int
+        get() = p.getInt("nudgeHours", 4)
+        set(v) = p.edit().putInt("nudgeHours", v).apply()
+
+    /** The read-detection check card was closed. */
+    var selfTestDone: Boolean
+        get() = p.getBoolean("selfTestDone", false)
+        set(v) = p.edit().putBoolean("selfTestDone", v).apply()
 
     var onboarded: Boolean
         get() = p.getBoolean("onboarded", false)

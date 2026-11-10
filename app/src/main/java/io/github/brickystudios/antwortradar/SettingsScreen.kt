@@ -51,6 +51,7 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
     var names by remember { mutableStateOf(prefs.names) }
     var replies by remember { mutableStateOf(prefs.replies.joinToString("\n")) }
     var weeks by remember { mutableIntStateOf(prefs.quietWeeks) }
+    var nudge by remember { mutableIntStateOf(prefs.nudgeHours) }
     var enabled by remember { mutableStateOf(prefs.enabled) }
     var ignored by remember { mutableStateOf(prefs.ignored) }
     var showAll by remember { mutableStateOf(false) }
@@ -70,6 +71,18 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
         SectionLabel(stringResource(R.string.settings_connection))
         Group {
             Text(stringResource(if (Live.connected) R.string.connection_ok else R.string.connection_off), color = Text1, fontSize = 15.sp, modifier = Modifier.padding(16.dp))
+            Radar.detection(log).forEach { (app, r) ->
+                GroupDivider()
+                Text(
+                    if (r.first) stringResource(R.string.selftest_ok, messengerLabel(app), r.second) else stringResource(R.string.selftest_bad, messengerLabel(app), r.second),
+                    color = if (r.first) Text1 else Coral, fontSize = 15.sp, modifier = Modifier.padding(16.dp),
+                )
+            }
+            GroupDivider()
+            TapRow(stringResource(R.string.diagnostics), Coral) {
+                Diagnostics.share(ctx)
+                Toast.makeText(ctx, R.string.diagnostics_copied, Toast.LENGTH_LONG).show()
+            }
             if (sleeping) {
                 GroupDivider()
                 TapRow(stringResource(R.string.battery_button), Coral) {
@@ -131,15 +144,17 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
         }
         Footnote(stringResource(R.string.replies_body))
 
-        SectionLabel(stringResource(R.string.settings_quiet))
+        SectionLabel(stringResource(R.string.settings_favorites))
         Group {
-            Row(Modifier.padding(horizontal = 8.dp).heightIn(min = 56.dp), verticalAlignment = Alignment.CenterVertically) {
-                TextButton(onClick = { weeks = (weeks - 1).coerceAtLeast(1); prefs.quietWeeks = weeks }) { Text("−", color = Coral, fontSize = 22.sp) }
-                Text(pluralStringResource(R.plurals.weeks, weeks, weeks), color = Text1, fontSize = 17.sp)
-                TextButton(onClick = { weeks = (weeks + 1).coerceAtMost(26); prefs.quietWeeks = weeks }) { Text("+", color = Coral, fontSize = 22.sp) }
-            }
+            Stepper(stringResource(R.string.nudge_label), stringResource(R.string.age_hour, nudge),
+                { nudge = (nudge - 1).coerceAtLeast(1); prefs.nudgeHours = nudge; Reminders.schedule(ctx) },
+                { nudge = (nudge + 1).coerceAtMost(48); prefs.nudgeHours = nudge; Reminders.schedule(ctx) })
+            GroupDivider()
+            Stepper(stringResource(R.string.quiet_label), pluralStringResource(R.plurals.weeks, weeks, weeks),
+                { weeks = (weeks - 1).coerceAtLeast(1); prefs.quietWeeks = weeks },
+                { weeks = (weeks + 1).coerceAtMost(26); prefs.quietWeeks = weeks })
         }
-        Footnote(stringResource(R.string.quiet_body))
+        Footnote(stringResource(R.string.favorites_body))
 
         SectionLabel(stringResource(R.string.settings_ignored))
         Group {
@@ -181,6 +196,17 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
             onClick = { runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/BrickyStudios/unreplied"))) } },
             modifier = Modifier.padding(top = 16.dp),
         ) { Text(stringResource(R.string.about, BuildConfig.VERSION_NAME), color = Text2, fontSize = 12.sp) }
+    }
+}
+
+/** Label left, value with − and + right. */
+@Composable
+private fun Stepper(label: String, value: String, minus: () -> Unit, plus: () -> Unit) {
+    Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 4.dp).heightIn(min = 56.dp), verticalAlignment = Alignment.CenterVertically) {
+        Text(label, color = Text1, fontSize = 16.sp, modifier = Modifier.weight(1f))
+        TextButton(onClick = minus) { Text("−", color = Coral, fontSize = 22.sp) }
+        Text(value, color = Text1, fontSize = 16.sp)
+        TextButton(onClick = plus) { Text("+", color = Coral, fontSize = 22.sp) }
     }
 }
 

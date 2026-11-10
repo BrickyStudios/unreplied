@@ -57,22 +57,25 @@ Unreplied catches the moment it happens. It started as Antwort-Radar (German for
 | You open the chat, tap or swipe the notification | Moves it to **Waiting for you**, oldest first, with the time you read it |
 | You reply straight from the notification | Sees your message in the notification and marks the chat done |
 | You reply inside the messenger | Swipe the entry left. Android gives apps no signal for messages you send in the messenger itself |
-| Not now | Swipe right (3 hours), or hold for "tonight" and "tomorrow morning". The chat comes back on its own |
+| Not now | Swipe right (3 hours), or hold for "tonight" and "tomorrow morning". The chat comes back with a notification |
 | Several people waiting | **Reply sprint**: one person at a time, pick a quick reply, send, next. Shows "2 of 5" |
 | Someone waits more than 2 days | The entry gets a heavy border, no red alarm colours |
-| 19:00 (you pick the hour) | One notification: "3 people are waiting for you: Mom (3 d), Sarah (2 d), Tom (5 h)" |
+| 19:00 (you pick the hour) | One notification: "3 people are waiting for you: Mom (3 d), Sarah (2 d), Tom (5 h)". On Sundays it adds your week: how many you answered and after how long on average |
+| You answer inside the messenger and they write again | When the messenger shows your answer in its notification, the wait restarts at their new message instead of counting from days ago |
 
 **Reply without switching apps.** While Unreplied holds a chat's notification, it can send your text through the messenger's own reply button, and tapping the entry opens that exact chat. When the button is gone (for example after a phone restart), the sprint copies your text and opens the messenger instead.
 
 **Quick replies.** Four defaults ("Saw it, I'll get back to you tonight.", "Sounds good!", ...), editable in the settings. Having a few sentences ready is a tip from the [r/ADHD thread](https://www.reddit.com/r/ADHD/comments/1wm31ed/) that started this app.
 
-**Staying in touch.** Hold a chat and mark the person as favorite. If no message goes back or forth for 3 weeks (you pick 1 to 26), they show up under **Haven't written in a while** and in the daily reminder.
+**Favorites.** Hold a chat and mark the person as favorite. Favorites get their own reminder once they have waited 4 hours (you pick 1 to 48), and if no message goes back or forth for 3 weeks (1 to 26), they show up under **Haven't written in a while** and in the daily reminder.
 
 **Groups** only show up when someone @-mentions you. Enter the names you have in your groups in the settings. **Ignore** a chat by holding it; the settings list ignored chats so you can bring them back.
 
 **Widget and quick-settings tile** show how many people are waiting, on the home screen and in the notification shade.
 
 <p align="center"><img src="docs/bilder/app/tagesmeldung.png" width="520" alt="Daily reminder notification: 2 people are waiting for you"></p>
+
+**Check on first run.** Open any chat that has a notification and come back: a card shows per messenger whether Unreplied noticed ("WhatsApp: works (code 8)"). **Bug reports without names:** *Copy diagnostics* in the settings puts the app and Android versions, the messengers and the check log with every chat name replaced by "Chat 1", "Chat 2" into the clipboard and opens the issue form.
 
 **Check log.** Phones and messengers differ in how they remove notifications. The settings show the last 50 events with Android's reason code (`8` = the app removed it, `1` = tapped, `2` = swiped). If opening a chat shows up as 8 or 1, read detection works on your phone.
 
@@ -82,14 +85,14 @@ On by default: WhatsApp, WhatsApp Business, Signal, Molly, Telegram, Telegram X,
 
 ## Privacy
 
-- **No internet permission.** Check it yourself: `aapt dump permissions Unreplied.apk` lists only `POST_NOTIFICATIONS`.
+- **No internet permission.** Check it yourself: `aapt dump permissions Unreplied.apk` lists `POST_NOTIFICATIONS` and `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` (to offer the battery exception), and no `INTERNET`.
 - Only the messengers you switch on are read. Every other app's notifications are skipped in the first check of the listener.
 - Stored per chat: name, times, the first 80 characters of the last message. All in one file in the app's private storage, excluded from cloud backup and device transfer. **Delete all data** in the settings wipes it.
 - No analytics, no crash reporting, no Google libraries beyond AndroidX.
 
 ## Limits
 
-- Read detection is tested on an emulator, not yet with every messenger on real phones. The check log tells you how yours behaves; please [open an issue](https://github.com/BrickyStudios/unreplied/issues) with the codes you see.
+- Read detection is tested on an emulator, not yet with every messenger on real phones. The first-run check tells you how yours behaves; if a messenger shows "doesn’t count as read", please copy the diagnostics and [open an issue](https://github.com/BrickyStudios/unreplied/issues).
 - Messages that arrive while the chat is open on screen never create a notification, so Unreplied doesn't see them.
 - "Answered" is only detected when you reply from the notification or from Unreplied. Replies typed in the messenger need a swipe.
 - Reply buttons and "open this exact chat" live in memory. After a phone restart they come back with the next notification of that chat.
@@ -118,7 +121,9 @@ Du liest eine Nachricht, antwortest im Kopf und schickst nie ab. Unreplied merkt
 
 - Wischen nach links: erledigt. Nach rechts: später (kommt von selbst wieder)
 - **Antwort-Sprint**: alle Wartenden nacheinander, mit eigenen Textbausteinen, direkt über den Antwort-Knopf des Messengers
-- **Lange nicht geschrieben**: Favoriten, mit denen seit Wochen nichts lief
+- **Favoriten**: eigene Erinnerung nach ein paar Stunden, dazu „Lange nicht geschrieben“ nach Wochen ohne Nachricht
+- „Später“ meldet sich mit einer Benachrichtigung zurück, sonntags kommt ein Wochenrückblick
+- Prüfung der Lese-Erkennung beim ersten Start, Diagnose ohne Namen für Fehlerberichte
 - WhatsApp, Signal, Telegram, Threema und SMS, jeder Messenger einzeln schaltbar
 - Widget, Schnelleinstellungs-Kachel und eine Tagesmeldung zu deiner Uhrzeit, nie eine pro Nachricht
 - Ohne Internet-Berechtigung, ohne Konto, App auf Deutsch und Englisch, läuft auf GrapheneOS

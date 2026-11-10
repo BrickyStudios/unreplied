@@ -20,6 +20,8 @@ data class Entry(
     val doneAt: Long = 0,
     /** hidden from the waiting list until then ("Später") */
     val snoozeUntil: Long = 0,
+    /** when a favorite was last nudged; a nudge counts for one wait only (nudgedAt >= since) */
+    val nudgedAt: Long = 0,
 ) {
     val app get() = key.substringBefore('|')
 }
@@ -32,6 +34,10 @@ data class Incoming(
     val group: Boolean,
     val fromMe: Boolean,
     val time: Long,
+    /** newest message of yours in the notification's history, if the messenger shows it */
+    val repliedAt: Long? = null,
+    /** their first message after your last one (or the oldest in the history when none is yours) */
+    val waitingSince: Long? = null,
 )
 
 /** Last contact with a person in either direction; the base for "Lange nicht geschrieben". */
@@ -71,9 +77,14 @@ object Radar {
         if (old != null && m.time <= old.last) return old // repost of a message we already have
         if (m.group && !mentioned(m.text, names)) return old
         val preview = m.text.take(PREVIEW)
-        return if (old == null || old.state == State.DONE)
-            Entry(m.key, m.name, preview, m.group, since = m.time, last = m.time, state = State.UNREAD)
-        else old.copy(name = m.name, preview = preview, last = m.time, state = State.UNREAD, snoozeUntil = 0)
+        if (old == null || old.state == State.DONE)
+            return Entry(m.key, m.name, preview, m.group, since = minOf(m.waitingSince ?: m.time, m.time), last = m.time, state = State.UNREAD)
+        // you answered inside the messenger after this wait began: the wait restarts at their first message after that
+        val restart = m.repliedAt != null && m.repliedAt >= old.since && m.waitingSince != null
+        return old.copy(
+            name = m.name, preview = preview, last = m.time, state = State.UNREAD, snoozeUntil = 0,
+            since = if (restart) minOf(m.waitingSince!!, m.time) else old.since,
+        )
     }
 
     /** The notification disappeared. Only reasons in [SEEN] count as "read". */
@@ -89,6 +100,39 @@ object Radar {
         all.filter { it.state == State.READ && it.snoozeUntil > now }.sortedBy { it.snoozeUntil }
     fun unread(all: Collection<Entry>) = all.filter { it.state == State.UNREAD }.sortedByDescending { it.last }
     fun doneSince(all: Collection<Entry>, from: Long) = all.count { it.state == State.DONE && it.doneAt >= from }
+
+    /** "Später" ran out: back on the list, and worth one notice. */
+    fun dueSnoozes(all: Collection<Entry>, now: Long) = all.filter { it.state == State.READ && it.snoozeUntil in 1..now }
+
+    /** Favorites who have waited [hours] or longer and were not nudged in this wait yet. */
+    fun dueFavorites(all: Collection<Entry>, favorites: Set<String>, now: Long, hours: Int) = all.filter {
+        it.state == State.READ && it.key in favorites && it.snoozeUntil <= now && now - it.since >= hours * HOUR && it.nudgedAt < it.since
+    }
+
+    /** When the reminder alarm should fire next: the earliest snooze end or favorite nudge, null when nothing is pending. */
+    fun nextReminder(all: Collection<Entry>, favorites: Set<String>, now: Long, hours: Int): Long? {
+        // a snooze that ran out while the phone was off is due at once
+        val snoozes = all.filter { it.state == State.READ && it.snoozeUntil > 0 }.map { maxOf(it.snoozeUntil, now) }
+        val nudges = all.filter { it.state == State.READ && it.key in favorites && it.nudgedAt < it.since }
+            .map { maxOf(it.since + hours * HOUR, it.snoozeUntil, now) }
+        return (snoozes + nudges).minOrNull()
+    }
+
+    /** Answered in the last seven days and the average time from their first message to your answer. */
+    fun weekStats(all: Collection<Entry>, now: Long): Pair<Int, Long> {
+        val done = all.filter { it.state == State.DONE && it.doneAt >= now - WEEK && it.doneAt >= it.since }
+        return done.size to if (done.isEmpty()) 0L else done.sumOf { it.doneAt - it.since } / done.size
+    }
+
+    /**
+     * Read detection per messenger, from the check log: true once a removal counted as read (with its code),
+     * false when the messenger only removed notifications in ways that do not count. Apps without removals are absent.
+     */
+    fun detection(log: List<LogLine>): Map<String, Pair<Boolean, Int>> =
+        log.filter { it.app.isNotEmpty() && (it.ev == Ev.READ || it.ev == Ev.REMOVED) }.groupBy { it.app }.mapValues { (_, lines) ->
+            val read = lines.firstOrNull { it.ev == Ev.READ } // the log is newest first
+            if (read != null) true to read.reason else false to lines.first().reason
+        }
 
     /** Keep the file small: answered chats older than 30 days go. */
     fun prune(all: Collection<Entry>, now: Long) =

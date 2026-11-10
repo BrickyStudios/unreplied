@@ -1,0 +1,13 @@
+<p>You open a chat, answer in your head, and never send it. Your messenger stops showing the chat as unread the moment you open it. Unreplied notices exactly that moment and keeps a list of who is waiting for your reply, and for how long.</p>
+<ul>
+<li><b>Waiting list</b>: oldest first. Swipe left when you answered, right for later.</li>
+<li><b>Reply sprint</b>: everyone who waits, one at a time, with your own quick replies, sent through the messenger's reply button.</li>
+<li><b>Later</b>: in 3 hours, tonight or tomorrow morning. The chat comes back with a notification.</li>
+<li><b>Favorites</b>: their own reminder after a few hours, and a hint when you haven't written in weeks.</li>
+<li><b>One daily reminder</b>, never one per message. On Sundays it adds your week in numbers.</li>
+<li>WhatsApp, Signal, Molly, Telegram, Threema and SMS apps, each with its own switch.</li>
+<li>Read-detection check on first run and a diagnostics report without names for bug reports.</li>
+<li>Widget, quick-settings tile, English and German.</li>
+</ul>
+<p><b>Privacy</b>: no internet permission, no account, no analytics. It stores the name, times and the first 80 characters per chat in private app storage, excluded from backups. Open source under GPL-3.0.</p>
+<p>Unreplied is not affiliated with WhatsApp or Meta.</p>

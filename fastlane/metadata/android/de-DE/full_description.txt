@@ -1,0 +1,13 @@
+<p>Du öffnest einen Chat, antwortest im Kopf und schickst nie ab. Dein Messenger zeigt den Chat nicht mehr als ungelesen, sobald du ihn öffnest. Unreplied merkt genau diesen Moment und führt eine Liste, wer seit wann auf deine Antwort wartet.</p>
+<ul>
+<li><b>Warteliste</b>: wer am längsten wartet, steht oben. Nach links wischen heißt erledigt, nach rechts später.</li>
+<li><b>Antwort-Sprint</b>: alle Wartenden nacheinander, mit eigenen Textbausteinen, gesendet über den Antwort-Knopf des Messengers.</li>
+<li><b>Später</b>: in 3 Stunden, heute Abend oder morgen früh. Der Chat meldet sich dann wieder.</li>
+<li><b>Favoriten</b>: eigene Erinnerung nach ein paar Stunden und ein Hinweis, wenn ihr seit Wochen nicht geschrieben habt.</li>
+<li><b>Eine Tagesmeldung</b>, nie eine pro Nachricht. Sonntags mit deiner Woche in Zahlen.</li>
+<li>WhatsApp, Signal, Molly, Telegram, Threema und SMS-Apps, jeder Messenger einzeln schaltbar.</li>
+<li>Prüfung der Lese-Erkennung beim ersten Start und eine Diagnose ohne Namen für Fehlerberichte.</li>
+<li>Widget, Schnelleinstellungs-Kachel, Deutsch und Englisch.</li>
+</ul>
+<p><b>Datenschutz</b>: keine Internet-Berechtigung, kein Konto, keine Statistik. Gespeichert werden Name, Uhrzeiten und die ersten 80 Zeichen pro Chat im privaten App-Speicher, ausgenommen vom Backup. Open Source unter GPL-3.0.</p>
+<p>Unreplied gehört nicht zu WhatsApp oder Meta.</p>
