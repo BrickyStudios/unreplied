@@ -3,32 +3,80 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Antwort-Radar: reply reminder for WhatsApp, Signal and Telegram on Android (ADHD-friendly, open source)</title>
-<meta name="description" content="Read a message and forgot to reply? Antwort-Radar notices when you open a WhatsApp, Signal or Telegram chat without answering, lists who is waiting and lets you answer everyone in one sprint. Free, open source, no internet permission.">
-<link rel="canonical" href="https://brickystudios.github.io/antwort-radar/">
-<link rel="alternate" hreflang="en" href="https://brickystudios.github.io/antwort-radar/">
-<link rel="alternate" hreflang="de" href="https://brickystudios.github.io/antwort-radar/#deutsch">
+<title>Unreplied: ADHD texting app that reminds you to text back (Android, free, open source)</title>
+<meta name="description" content="Read a text, answered it in your head and never sent it? Unreplied is a free Android app that reminds you of unanswered WhatsApp, Signal, Telegram and SMS messages. ADHD-friendly, offline, open source.">
+<link rel="canonical" href="https://brickystudios.github.io/unreplied/">
+<link rel="alternate" hreflang="en" href="https://brickystudios.github.io/unreplied/">
+<link rel="alternate" hreflang="de" href="https://brickystudios.github.io/unreplied/#deutsch">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Antwort-Radar: never forget a WhatsApp you read but didn't answer">
-<meta property="og:description" content="Android app that lists who is waiting for your reply. Offline, open source, ADHD-friendly.">
-<meta property="og:url" content="https://brickystudios.github.io/antwort-radar/">
-<meta property="og:image" content="https://brickystudios.github.io/antwort-radar/bilder/social-preview.png">
+<meta property="og:title" content="Unreplied: the ADHD texting app that reminds you to text back">
+<meta property="og:description" content="Lists who is waiting for your reply on WhatsApp, Signal, Telegram and SMS. Free Android app, offline, open source.">
+<meta property="og:url" content="https://brickystudios.github.io/unreplied/">
+<meta property="og:image" content="https://brickystudios.github.io/unreplied/bilder/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#14121C">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Antwort-Radar",
-  "alternateName": "Reply Radar",
+  "name": "Unreplied",
+  "alternateName": "Unreplied",
   "operatingSystem": "Android 8.0+",
   "applicationCategory": "UtilitiesApplication",
   "description": "Reply reminder for WhatsApp, Signal, Telegram and SMS on Android. Notices when you open a chat and don't answer, lists who is waiting for you, offers a reply sprint with quick replies and sends one reminder a day. No internet permission.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
   "license": "https://www.gnu.org/licenses/gpl-3.0.html",
-  "downloadUrl": "https://github.com/BrickyStudios/antwort-radar/releases/latest/download/AntwortRadar.apk",
-  "codeRepository": "https://github.com/BrickyStudios/antwort-radar",
-  "screenshot": "https://brickystudios.github.io/antwort-radar/bilder/1-waiting.png"
+  "downloadUrl": "https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied.apk",
+  "codeRepository": "https://github.com/BrickyStudios/unreplied",
+  "screenshot": "https://brickystudios.github.io/unreplied/bilder/1-waiting.png"
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "How do I remember to text people back?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Unreplied keeps the list for you. It notices when you open a chat on WhatsApp, Signal, Telegram or SMS and don't reply, and shows everyone who is waiting, oldest first. Once a day it sends one reminder, never one per message."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Is there an app for unanswered WhatsApp messages?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes. Unreplied is a free Android app that tracks WhatsApp chats you read but didn't answer. WhatsApp itself only marks chats unread until you open them."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Does Unreplied read my messages or upload them?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "It reads the notifications of the messengers you switch on and keeps the name, the times and the first 80 characters of the last message on your phone. The app has no internet permission, so it cannot send anything anywhere."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Why is texting back so hard with ADHD?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Many people with ADHD read a message, plan the answer in their head and get pulled away before sending it. Once the chat is opened, the unread badge is gone and the reminder with it. Unreplied brings that reminder back."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Is there an iPhone version?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No. Unreplied needs Android's notification access, which iOS doesn't offer to apps."
+   }
+  }
+ ]
 }
 </script>
 <style>
@@ -38,6 +86,7 @@
   main { max-width: 760px; margin: 0 auto; padding: 56px 16px 80px; }
   .brand { font-weight: 600; letter-spacing: -.01em; } .brand b { color: var(--coral); font-weight: 600; }
   h1 { font-size: clamp(34px, 7vw, 52px); line-height: 1.08; letter-spacing: -.025em; margin: 18px 0 16px; }
+  h3 { font-size: 17px; margin: 22px 0 4px; }
   h2 { font-size: 24px; margin: 56px 0 12px; letter-spacing: -.01em; }
   p, li { color: var(--paper); } .muted { color: var(--muted); }
   a { color: var(--coral); }
@@ -54,12 +103,12 @@
 </head>
 <body>
 <main>
-  <div class="brand">Antwort-<b>Radar</b></div>
-  <h1>Never forget a WhatsApp you read but didn't answer</h1>
-  <p>You open a chat, answer in your head, and never send it. Your messenger stops showing the chat as unread the moment you open it. Antwort-Radar notices exactly that moment and keeps a short list of <strong>who is waiting for your reply</strong>, and for how long.</p>
+  <div class="brand">Un<b>replied</b></div>
+  <h1>The ADHD texting app that reminds you to text back</h1>
+  <p>You open a chat, answer in your head, and never send it. Your messenger stops showing the chat as unread the moment you open it. Unreplied notices exactly that moment and keeps a short list of <strong>who is waiting for your reply</strong>, and for how long.</p>
   <p class="muted">Free Android app · WhatsApp, Signal, Telegram, Threema, SMS · no internet permission · no account · English and German · built for people with ADHD</p>
-  <a class="cta" href="https://github.com/BrickyStudios/antwort-radar/releases/latest/download/AntwortRadar.apk">Download APK</a>
-  <a class="cta ghost" href="https://github.com/BrickyStudios/antwort-radar">Source code on GitHub</a>
+  <a class="cta" href="https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied.apk">Download APK</a>
+  <a class="cta ghost" href="https://github.com/BrickyStudios/unreplied">Source code on GitHub</a>
 
   <div class="shots">
     <img src="bilder/1-waiting.png" alt="List of people waiting for a reply, oldest first" loading="lazy" width="260" height="462">
@@ -80,7 +129,7 @@
   </table>
 
   <h2>Nothing to type in</h2>
-  <p>A to-do app only helps if you type the reminder in, right when your head is already somewhere else. Antwort-Radar fills the list on its own from the notifications Android already shows you.</p>
+  <p>A to-do app only helps if you type the reminder in, right when your head is already somewhere else. Unreplied fills the list on its own from the notifications Android already shows you.</p>
 
   <h2>Privacy</h2>
   <ul>
@@ -90,11 +139,23 @@
     <li>Open source under GPL-3.0.</li>
   </ul>
 
-  <h2 id="deutsch">Auf Deutsch</h2>
-  <p>Du liest eine Nachricht, antwortest im Kopf und schickst nie ab. Antwort-Radar merkt, wenn du einen Chat öffnest und nicht antwortest, und zeigt dir, wer seit wann auf dich wartet. Mit Antwort-Sprint, Textbausteinen, „Später“ und einer Sammelmeldung am Tag. Für WhatsApp, Signal, Telegram, Threema und SMS. Kostenlos, ohne Internet-Berechtigung, Open Source.</p>
-  <a class="cta" href="https://github.com/BrickyStudios/antwort-radar/releases/latest/download/AntwortRadar.apk">APK herunterladen</a>
+  <h2>Questions</h2>
+  <h3>How do I remember to text people back?</h3>
+  <p>Unreplied keeps the list for you. It notices when you open a chat on WhatsApp, Signal, Telegram or SMS and don't reply, and shows everyone who is waiting, oldest first. Once a day it sends one reminder, never one per message.</p>
+  <h3>Is there an app for unanswered WhatsApp messages?</h3>
+  <p>Yes. Unreplied is a free Android app that tracks WhatsApp chats you read but didn't answer. WhatsApp itself only marks chats unread until you open them.</p>
+  <h3>Does Unreplied read my messages or upload them?</h3>
+  <p>It reads the notifications of the messengers you switch on and keeps the name, the times and the first 80 characters of the last message on your phone. The app has no internet permission, so it cannot send anything anywhere.</p>
+  <h3>Why is texting back so hard with ADHD?</h3>
+  <p>Many people with ADHD read a message, plan the answer in their head and get pulled away before sending it. Once the chat is opened, the unread badge is gone and the reminder with it. Unreplied brings that reminder back.</p>
+  <h3>Is there an iPhone version?</h3>
+  <p>No. Unreplied needs Android's notification access, which iOS doesn't offer to apps.</p>
 
-  <footer>Antwort-Radar is not affiliated with WhatsApp or Meta. · <a href="https://github.com/BrickyStudios">BrickyStudios</a></footer>
+  <h2 id="deutsch">Auf Deutsch</h2>
+  <p>Unreplied (früher Antwort-Radar) ist eine WhatsApp-Erinnerung für unbeantwortete Nachrichten. Du liest eine Nachricht, antwortest im Kopf und schickst nie ab. Unreplied merkt, wenn du einen Chat öffnest und nicht antwortest, und zeigt dir, wer seit wann auf dich wartet. Mit Antwort-Sprint, Textbausteinen, „Später“ und einer Sammelmeldung am Tag. Für WhatsApp, Signal, Telegram, Threema und SMS. Kostenlos, ohne Internet-Berechtigung, Open Source.</p>
+  <a class="cta" href="https://github.com/BrickyStudios/unreplied/releases/latest/download/Unreplied.apk">APK herunterladen</a>
+
+  <footer>Unreplied is not affiliated with WhatsApp or Meta. · <a href="https://github.com/BrickyStudios">BrickyStudios</a></footer>
 </main>
 </body>
 </html>

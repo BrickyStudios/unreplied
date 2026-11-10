@@ -32,7 +32,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:localeConfig="@xml/locales_config"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AntwortRadar">
+        android:theme="@style/Theme.Unreplied">
 
         <activity
             android:name=".MainActivity"

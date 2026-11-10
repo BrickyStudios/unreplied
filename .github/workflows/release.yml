@@ -57,19 +57,19 @@ jobs:
 
       - name: Rename APK
         run: |
-          # same name in every release, so releases/latest/download/AntwortRadar.apk always works
-          mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/AntwortRadar.apk
+          # same name in every release, so releases/latest/download/Unreplied.apk always works
+          mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/Unreplied.apk
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.tag.outputs.value }}
-          name: Antwort-Radar ${{ steps.tag.outputs.value }}
+          name: Unreplied ${{ steps.tag.outputs.value }}
           body: |
-            Download `AntwortRadar.apk` below and install it (Android 8.0 or newer, runs on GrapheneOS without Google services).
+            Download `Unreplied.apk` below and install it (Android 8.0 or newer, runs on GrapheneOS without Google services).
             The app has no internet permission, so it cannot update itself: add this repo to Obtainium for updates.
 
-            Lade `AntwortRadar.apk` herunter und installiere sie (Android 8.0 oder neuer, läuft auf GrapheneOS ohne Google-Dienste).
-          files: app/build/outputs/apk/release/AntwortRadar.apk
+            Lade `Unreplied.apk` herunter und installiere sie (Android 8.0 oder neuer, läuft auf GrapheneOS ohne Google-Dienste).
+          files: app/build/outputs/apk/release/Unreplied.apk
           draft: false
           prerelease: false

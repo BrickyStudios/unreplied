@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AntwortRadar"
+rootProject.name = "Unreplied"
 include(":app")

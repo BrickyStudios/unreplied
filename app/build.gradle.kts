@@ -12,11 +12,11 @@ android {
         applicationId = "io.github.brickystudios.antwortradar"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
-        versionName = "0.2.0"
+        versionCode = 3
+        versionName = "0.2.1"
     }
 
-    // Release key lives only in CI secrets (and ~/.config/antwort-radar on the maintainer's machine).
+    // Release key lives only in CI secrets (and ~/.config/unreplied on the maintainer's machine).
     // Without it, local release builds fall back to the debug key so they still install.
     val storePass = System.getenv("SIGNING_STORE_PASSWORD")
     signingConfigs {

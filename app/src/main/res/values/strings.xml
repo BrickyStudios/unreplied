@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Antwort-Radar</string>
+    <string name="app_name" translatable="false">Unreplied</string>
 
     <!-- list -->
     <string name="waiting_title">Waiting for you</string>
@@ -51,7 +51,7 @@
 
     <!-- access + onboarding -->
     <string name="access_title">Allow notification access</string>
-    <string name="access_body">This is the only way the radar sees when you opened a chat. It reads only the messengers you switch on, and nothing leaves the phone.</string>
+    <string name="access_body">This is the only way Unreplied sees when you opened a chat. It reads only the messengers you switch on, and nothing leaves the phone.</string>
     <string name="access_button">Allow access</string>
     <string name="restricted_help">Switch greyed out, or Android says “Restricted setting”? Android blocks this for apps installed from a file. Open app info, tap ⋮ at the top right, choose “Allow restricted settings”, then try again.</string>
     <string name="restricted_button">Open app info</string>
@@ -77,7 +77,7 @@
     </plurals>
     <string name="sent_ok">Sent</string>
     <string name="send_failed">Couldn\'t send, the text is copied</string>
-    <string name="no_reply_button">No reply button for this chat right now. The radar only gets one from a fresh notification. Copy the text and send it in the chat.</string>
+    <string name="no_reply_button">No reply button for this chat right now. Unreplied only gets one from a fresh notification. Copy the text and send it in the chat.</string>
 
     <!-- settings -->
     <string name="settings_reminder">Daily reminder</string>
@@ -91,7 +91,7 @@
     <string name="groups_body">Group chats only show up when someone @-mentions you. Enter the names you have in groups, separated by commas.</string>
     <string name="names_hint">e.g. Alex, Al</string>
     <string name="settings_replies">Quick replies</string>
-    <string name="replies_body">One per line. You can pick them when you reply from the radar.</string>
+    <string name="replies_body">One per line. You can pick them when you reply from Unreplied.</string>
     <string name="settings_quiet">Haven\'t written in a while</string>
     <string name="quiet_body">Favorites show up here after this long without a message in either direction. Mark someone as favorite by holding their chat.</string>
     <plurals name="weeks">
@@ -116,7 +116,7 @@
     <string name="ev_removed">reason %d (system, not counted as read)</string>
     <string name="ev_answered">your reply seen → done</string>
     <string name="ev_done">marked done in the app</string>
-    <string name="ev_replied">answered from the radar</string>
+    <string name="ev_replied">answered from Unreplied</string>
     <string name="ev_snoozed">put to later</string>
     <string name="ev_ignored">ignored</string>
 

@@ -9,7 +9,7 @@ const images = [
   ["1-waiting.png", 1080, 1920, "tall", "Read it,|never answered?", "the list fills itself from your notifications", app("list.png")],
   ["2-sprint.png", 1080, 1920, "tall", "Answer everyone|in one go", "reply sprint with your own quick replies", app("sprint.png")],
   ["3-settings.png", 1080, 1920, "tall", "WhatsApp, Signal,|Telegram, SMS", "you pick which messengers it reads", app("settings.png")],
-  ["social-preview.png", 1280, 640, "wide", "Who is waiting|for your reply", "Android · WhatsApp, Signal, Telegram · offline · ADHD-friendly", app("list.png")],
+  ["social-preview.png", 1280, 640, "wide", "Who is waiting|for your reply", "ADHD texting app · Android · open source", app("list.png")],
 ];
 const browser = await chromium.launch();
 for (const [name, w, h, art, t, s, img] of images) {

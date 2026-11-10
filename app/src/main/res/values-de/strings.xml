@@ -45,7 +45,7 @@
     <string name="age_week">%d Wo</string>
 
     <string name="access_title">Benachrichtigungen mitlesen erlauben</string>
-    <string name="access_body">Nur so sieht der Radar, wann du einen Chat geöffnet hast. Er liest nur die Messenger, die du einschaltest, und nichts verlässt das Handy.</string>
+    <string name="access_body">Nur so sieht Unreplied, wann du einen Chat geöffnet hast. Die App liest nur die Messenger, die du einschaltest, und nichts verlässt das Handy.</string>
     <string name="access_button">Zugriff erlauben</string>
     <string name="restricted_help">Schalter ausgegraut oder Android meldet „Eingeschränkte Einstellung“? Das sperrt Android bei Apps, die aus einer Datei installiert wurden. Öffne die App-Info, tippe oben rechts auf ⋮, wähle „Eingeschränkte Einstellungen zulassen“ und versuch es dann noch mal.</string>
     <string name="restricted_button">App-Info öffnen</string>
@@ -70,7 +70,7 @@
     </plurals>
     <string name="sent_ok">Gesendet</string>
     <string name="send_failed">Senden ging nicht, der Text ist kopiert</string>
-    <string name="no_reply_button">Für diesen Chat gibt es gerade keinen Antwort-Knopf. Den bekommt der Radar nur aus einer frischen Benachrichtigung. Text kopieren und im Chat senden.</string>
+    <string name="no_reply_button">Für diesen Chat gibt es gerade keinen Antwort-Knopf. Den bekommt Unreplied nur aus einer frischen Benachrichtigung. Text kopieren und im Chat senden.</string>
 
     <string name="settings_reminder">Tagesmeldung</string>
     <string name="hour_fmt">%02d:00 Uhr</string>
@@ -83,7 +83,7 @@
     <string name="groups_body">Gruppenchats erscheinen nur, wenn dich jemand @erwähnt. Trag ein, wie du in Gruppen heißt, mehrere mit Komma.</string>
     <string name="names_hint">z. B. Alex, Al</string>
     <string name="settings_replies">Textbausteine</string>
-    <string name="replies_body">Einer pro Zeile. Du kannst sie wählen, wenn du aus dem Radar antwortest.</string>
+    <string name="replies_body">Einer pro Zeile. Du kannst sie wählen, wenn du aus Unreplied antwortest.</string>
     <string name="settings_quiet">Lange nicht geschrieben</string>
     <string name="quiet_body">Favoriten erscheinen hier, wenn so lange keine Nachricht hin oder her ging. Favorit wird jemand, wenn du seinen Chat gedrückt hältst.</string>
     <plurals name="weeks">
@@ -107,7 +107,7 @@
     <string name="ev_removed">Grund %d (System, zählt nicht als gelesen)</string>
     <string name="ev_answered">deine Antwort gesehen → erledigt</string>
     <string name="ev_done">in der App erledigt</string>
-    <string name="ev_replied">aus dem Radar beantwortet</string>
+    <string name="ev_replied">aus Unreplied beantwortet</string>
     <string name="ev_snoozed">auf später geschoben</string>
     <string name="ev_ignored">ignoriert</string>
 

@@ -152,7 +152,7 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
         ) { Text(stringResource(if (confirmDelete) R.string.delete_confirm else R.string.delete_all), color = if (confirmDelete) Coral else Text1) }
 
         TextButton(onClick = {
-            runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/BrickyStudios/antwort-radar"))) }
+            runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/BrickyStudios/unreplied"))) }
         }) { Text(stringResource(R.string.about, BuildConfig.VERSION_NAME), color = Text2, fontSize = 12.sp) }
     }
 }

@@ -23,6 +23,6 @@ const q=new URLSearchParams(location.search);
 document.documentElement.style.setProperty("--w",q.get("w")+"px");document.documentElement.style.setProperty("--h",q.get("h")+"px");
 const t=q.get("t").replace("|","<br>");
 document.body.innerHTML = q.get("art")==="wide"
- ? `<div class="wide"><div><div class="brand">Antwort-<b>Radar</b></div><h1>${t}</h1><div class="sub">${q.get("s")}</div><div class="small">github.com/BrickyStudios/antwort-radar</div></div><div class="phone"><img src="${q.get("img")}"></div></div>`
+ ? `<div class="wide"><div><div class="brand">Un<b>replied</b></div><h1>${t}</h1><div class="sub">${q.get("s")}</div><div class="small">github.com/BrickyStudios/unreplied</div></div><div class="phone"><img src="${q.get("img")}"></div></div>`
  : `<div class="tall"><h1>${t}</h1><div class="sub">${q.get("s")}</div><div class="phone"><img src="${q.get("img")}"></div></div>`;
 </script></body></html>
