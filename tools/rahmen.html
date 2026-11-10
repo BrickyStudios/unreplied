@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<!-- Repo images: tall 1080x1920 store-style shots and the 1280x640 social preview. Rendered by tools/bilder.mjs -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=Inter:wght@400;500&display=block" rel="stylesheet">
+<style>
+:root{--ink:#14121C;--card:#1F1C2B;--coral:#FF8A65;--paper:#EDEAF5;--muted:#A29CB5}
+*{margin:0;box-sizing:border-box}
+html,body{width:var(--w);height:var(--h);overflow:hidden}
+body{background:radial-gradient(110% 70% at 50% 0%,#2A2140 0%,var(--ink) 60%);color:var(--paper);font-family:Inter,sans-serif}
+.tall{display:flex;flex-direction:column;align-items:center;padding-top:150px}
+h1{font-family:Fraunces,serif;font-weight:500;font-size:104px;line-height:1.04;letter-spacing:-.025em;text-align:center;max-width:940px}
+.sub{margin-top:30px;font-size:38px;color:var(--coral)}
+.phone{margin-top:90px;width:800px;padding:22px 22px 0;border-radius:72px 72px 0 0;background:#0b0a10;box-shadow:0 0 0 3px #2d2840,0 40px 120px rgba(0,0,0,.55)}
+.phone img{display:block;width:100%;border-radius:52px 52px 0 0}
+.wide{display:grid;grid-template-columns:1fr 430px;grid-template-rows:640px;gap:40px;height:100%;padding:0 70px 0 84px;align-items:center}
+.brand{font-size:34px;font-weight:500;letter-spacing:-.02em}.brand b{color:var(--coral);font-weight:500}
+.wide h1{text-align:left;font-size:60px;max-width:none;margin-top:22px}
+.wide .sub{font-size:25px;margin-top:26px}
+.wide .small{margin-top:34px;font-size:22px;color:var(--muted)}
+.wide .phone{width:430px;margin-top:90px;padding:14px 14px 0;border-radius:48px 48px 0 0;align-self:start}
+.wide .phone img{border-radius:36px 36px 0 0}
+</style></head><body><script>
+const q=new URLSearchParams(location.search);
+document.documentElement.style.setProperty("--w",q.get("w")+"px");document.documentElement.style.setProperty("--h",q.get("h")+"px");
+const t=q.get("t").replace("|","<br>");
+document.body.innerHTML = q.get("art")==="wide"
+ ? `<div class="wide"><div><div class="brand">Antwort-<b>Radar</b></div><h1>${t}</h1><div class="sub">${q.get("s")}</div><div class="small">github.com/BrickyStudios/antwort-radar</div></div><div class="phone"><img src="${q.get("img")}"></div></div>`
+ : `<div class="tall"><h1>${t}</h1><div class="sub">${q.get("s")}</div><div class="phone"><img src="${q.get("img")}"></div></div>`;
+</script></body></html>
