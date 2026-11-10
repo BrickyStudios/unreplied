@@ -212,7 +212,9 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
                 }
             }
         }
-        item(key = "note") { Footnote(stringResource(R.string.stored_note), Modifier.padding(vertical = 16.dp)) }
+        item(key = "note") {
+            Footnote(stringResource(if (Updater.supported) R.string.stored_note_updates else R.string.stored_note), Modifier.padding(vertical = 16.dp))
+        }
     }
 }
 

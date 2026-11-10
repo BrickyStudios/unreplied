@@ -12,8 +12,8 @@ android {
         applicationId = "io.github.brickystudios.antwortradar"
         minSdk = 26
         targetSdk = 35
-        versionCode = 7
-        versionName = "0.5.0"
+        versionCode = 8
+        versionName = "0.5.1"
     }
 
     // Two APKs from one code base, same app id and key, so either can be installed over the other:

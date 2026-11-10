@@ -176,4 +176,5 @@
     <string name="open_releases">Open the release page</string>
     <string name="updates_online_body">This version connects to GitHub only to look for a new release and download it. Your chats never leave the phone. The version without any internet access is Unreplied.apk on the same page.</string>
     <string name="updates_offline_body">This version has no internet access and can’t update itself. Add the repo to Obtainium, or install Unreplied-Updates.apk from the release page over this one: it keeps your data and updates itself through GitHub.</string>
+    <string name="stored_note_updates">Stored: name, times, first 80 characters. This version goes online only to fetch updates from GitHub.</string>
 </resources>

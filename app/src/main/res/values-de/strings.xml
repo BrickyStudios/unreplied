@@ -166,4 +166,5 @@
     <string name="open_releases">Release-Seite öffnen</string>
     <string name="updates_online_body">Diese Version verbindet sich nur mit GitHub, um eine neue Version zu finden und herunterzuladen. Deine Chats verlassen das Handy nie. Die Version ganz ohne Internet ist Unreplied.apk auf derselben Seite.</string>
     <string name="updates_offline_body">Diese Version hat keinen Internetzugriff und kann sich nicht selbst aktualisieren. Trag das Repo in Obtainium ein oder installiere Unreplied-Updates.apk von der Release-Seite über diese: Deine Daten bleiben, und sie aktualisiert sich dann selbst über GitHub.</string>
+    <string name="stored_note_updates">Gespeichert: Name, Uhrzeiten, erste 80 Zeichen. Diese Version geht nur online, um Updates von GitHub zu holen.</string>
 </resources>
