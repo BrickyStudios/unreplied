@@ -51,6 +51,13 @@ object Radar {
 
     fun key(app: String, chat: String) = "$app|$chat"
 
+    /**
+     * Chat messages only. Messengers also post ongoing service notices ("Checking for new messages" titled
+     * "WhatsApp"), missed calls and progress bars; those would show up as fake chats.
+     */
+    fun isChat(category: String?, ongoing: Boolean, messagingStyle: Boolean) =
+        !ongoing && (if (category != null) category == "msg" /* Notification.CATEGORY_MESSAGE */ else messagingStyle)
+
     /** Messengers append counters to titles: "Lisa (2 Nachrichten)", "Projekt (3 messages)". */
     fun cleanName(title: String) = title.replace(Regex("""\s*\(\d+\s*\p{L}+\)\s*$"""), "").trim()
 

@@ -1,7 +1,10 @@
 package io.github.brickystudios.antwortradar
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
+import android.os.PowerManager
+import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -56,6 +59,24 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             TextButton(onClick = onBack) { Text("← " + stringResource(R.string.back), color = Coral) }
             Text(stringResource(R.string.settings), color = Text1, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        }
+
+        Panel {
+            // why messages may arrive late: an unbound listener or a battery saver that stops it
+            Heading(stringResource(R.string.settings_connection))
+            Body(stringResource(if (Live.connected) R.string.connection_ok else R.string.connection_off), Modifier.padding(top = 4.dp))
+            val power = ctx.getSystemService(PowerManager::class.java)
+            if (!power.isIgnoringBatteryOptimizations(ctx.packageName)) {
+                Body(stringResource(R.string.battery_body), Modifier.padding(top = 8.dp))
+                OutlinedButton(
+                    onClick = {
+                        @SuppressLint("BatteryLife")
+                        val i = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:" + ctx.packageName))
+                        runCatching { ctx.startActivity(i) }
+                    },
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                ) { Text(stringResource(R.string.battery_button), color = Text1) }
+            }
         }
 
         Panel {

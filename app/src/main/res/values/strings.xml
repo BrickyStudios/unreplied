@@ -135,4 +135,12 @@
     <string name="tile_none">nobody waiting</string>
 
     <string name="default_replies">Saw it, I\'ll get back to you tonight.\nSounds good!\nSorry for the late reply!\nCan I call you later?</string>
+    <string name="ev_late">(%d s late)</string>
+    <string name="ev_connected">connected to notifications</string>
+    <string name="ev_disconnected">disconnected from notifications, reconnecting</string>
+    <string name="settings_connection">Connection</string>
+    <string name="connection_ok">Connected: new messages show up within a second.</string>
+    <string name="connection_off">Not connected right now. Android reconnects it; until then new messages show up late.</string>
+    <string name="battery_body">Some phones put apps to sleep to save battery and Unreplied then hears of messages late. Allowing it to run in the background fixes that. It uses next to no battery.</string>
+    <string name="battery_button">Don\'t put Unreplied to sleep</string>
 </resources>

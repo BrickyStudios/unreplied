@@ -7,8 +7,11 @@ import org.json.JSONObject
 import java.io.File
 import java.util.concurrent.Executors
 
-/** What happened, for the check log. Stored as a code so the log reads in the app's language. */
-enum class Ev { NEW, READ, REMOVED, ANSWERED, DONE, REPLIED, SNOOZED, IGNORED }
+/**
+ * What happened, for the check log. Stored as a code so the log reads in the app's language.
+ * LogLine.reason holds Android's removal reason for READ/REMOVED and the delivery delay in seconds for NEW.
+ */
+enum class Ev { NEW, READ, REMOVED, ANSWERED, DONE, REPLIED, SNOOZED, IGNORED, CONNECTED, DISCONNECTED }
 
 data class LogLine(val time: Long, val name: String, val ev: Ev, val reason: Int = 0)
 
@@ -47,6 +50,11 @@ object Store {
         entries.value = Radar.prune((entries.value - key).values + listOfNotNull(new), now).associateBy { it.key }
         if (ev != null) log.value = (listOf(LogLine(now, new?.name ?: old?.name ?: key, ev, reason)) + log.value).take(LOG_MAX)
         save()
+    }
+
+    /** A log line that is not about one chat (listener connected / disconnected). */
+    fun note(name: String, ev: Ev) {
+        log.value = (listOf(LogLine(System.currentTimeMillis(), name, ev)) + log.value).take(LOG_MAX); save()
     }
 
     fun touch(key: String, name: String, time: Long) {

@@ -4,6 +4,8 @@
     <!-- No INTERNET permission on purpose: chat names and previews cannot leave the phone. -->
     <!-- The daily reminder ("4 Leute warten auf dich"). Asked for on first start, Android 13+. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Only to offer "don't put Unreplied to sleep": battery savers otherwise stop the listener and messages arrive late. -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <!-- Tapping a chat opens the messenger, and the settings list the installed ones; Android 11+ only shows apps named here. Keep in sync with MESSENGERS. -->
     <queries>

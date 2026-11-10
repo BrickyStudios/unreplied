@@ -65,7 +65,7 @@ fun shortTime(ctx: Context, t: Long, now: Long): String =
     if (t >= startOfDay(now)) DateFormat.getTimeFormat(ctx).format(Date(t)) else SimpleDateFormat("EE", Locale.getDefault()).format(Date(t))
 
 fun evText(ctx: Context, l: LogLine): String = when (l.ev) {
-    Ev.NEW -> ctx.getString(R.string.ev_new)
+    Ev.NEW -> ctx.getString(R.string.ev_new) + if (l.reason >= 5) " " + ctx.getString(R.string.ev_late, l.reason) else ""
     Ev.READ -> ctx.getString(R.string.ev_read, l.reason)
     Ev.REMOVED -> ctx.getString(R.string.ev_removed, l.reason)
     Ev.ANSWERED -> ctx.getString(R.string.ev_answered)
@@ -73,6 +73,8 @@ fun evText(ctx: Context, l: LogLine): String = when (l.ev) {
     Ev.REPLIED -> ctx.getString(R.string.ev_replied)
     Ev.SNOOZED -> ctx.getString(R.string.ev_snoozed)
     Ev.IGNORED -> ctx.getString(R.string.ev_ignored)
+    Ev.CONNECTED -> ctx.getString(R.string.ev_connected)
+    Ev.DISCONNECTED -> ctx.getString(R.string.ev_disconnected)
 }
 
 @Composable

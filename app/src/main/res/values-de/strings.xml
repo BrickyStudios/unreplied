@@ -125,4 +125,12 @@
     <string name="tile_none">niemand wartet</string>
 
     <string name="default_replies">Hab\'s gesehen, ich melde mich heute Abend.\nKlingt gut!\nSorry für die späte Antwort!\nKann ich dich später anrufen?</string>
+    <string name="ev_late">(%d s verspätet)</string>
+    <string name="ev_connected">mit den Benachrichtigungen verbunden</string>
+    <string name="ev_disconnected">Verbindung getrennt, wird neu verbunden</string>
+    <string name="settings_connection">Verbindung</string>
+    <string name="connection_ok">Verbunden: Neue Nachrichten erscheinen innerhalb einer Sekunde.</string>
+    <string name="connection_off">Gerade nicht verbunden. Android verbindet neu, bis dahin kommen neue Nachrichten verspätet an.</string>
+    <string name="battery_body">Manche Handys schicken Apps zum Akkusparen schlafen, dann erfährt Unreplied erst spät von Nachrichten. Wenn du die App im Hintergrund laufen lässt, ist das behoben. Sie braucht dafür kaum Akku.</string>
+    <string name="battery_button">Unreplied nicht schlafen legen</string>
 </resources>

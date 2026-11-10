@@ -128,4 +128,14 @@ class RadarTest {
         assertEquals(3L to Span.DAY, Radar.age(3 * Radar.DAY + 5))
         assertEquals(4L to Span.WEEK, Radar.age(4 * Radar.WEEK))
     }
+
+    @Test fun onlyChatNotificationsCount() {
+        // WhatsApp's "Checking for new messages" runs as an ongoing foreground-service notification titled "WhatsApp"
+        assertEquals(false, Radar.isChat(category = "service", ongoing = true, messagingStyle = false))
+        assertEquals(false, Radar.isChat(category = null, ongoing = true, messagingStyle = true))
+        assertEquals(false, Radar.isChat(category = "missed_call", ongoing = false, messagingStyle = false))
+        assertEquals(true, Radar.isChat(category = "msg", ongoing = false, messagingStyle = false))
+        assertEquals(true, Radar.isChat(category = null, ongoing = false, messagingStyle = true))
+        assertEquals(false, Radar.isChat(category = null, ongoing = false, messagingStyle = false))
+    }
 }

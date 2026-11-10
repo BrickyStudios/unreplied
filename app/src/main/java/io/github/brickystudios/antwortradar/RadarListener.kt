@@ -1,6 +1,7 @@
 package io.github.brickystudios.antwortradar
 
 import android.app.Notification
+import android.content.ComponentName
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.core.app.NotificationCompat
@@ -14,9 +15,20 @@ class RadarListener : NotificationListenerService() {
 
     override fun onListenerConnected() {
         Store.init(this)
+        Live.connected = true
+        Store.note(getString(R.string.app_name), Ev.CONNECTED)
         Summary.schedule(this) // the system binds this service after every boot, so no boot receiver is needed
         // chats that arrived while the radar was off still count as unread
         runCatching { activeNotifications }.getOrNull()?.forEach { onNotificationPosted(it) }
+    }
+
+    // Android (and battery savers on some phones) can unbind the listener, e.g. after an app update. Ask to be bound
+    // again at once; until then nothing arrives, and the replay in onListenerConnected adds the missed chats late.
+    override fun onListenerDisconnected() {
+        Live.connected = false
+        Store.init(this)
+        Store.note(getString(R.string.app_name), Ev.DISCONNECTED)
+        requestRebind(ComponentName(this, RadarListener::class.java))
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
@@ -33,7 +45,8 @@ class RadarListener : NotificationListenerService() {
             new?.state == State.DONE -> Ev.ANSWERED
             else -> Ev.NEW
         }
-        Store.put(m.key, new, ev)
+        // seconds between the messenger posting and us hearing of it; large values point at an unbound listener
+        Store.put(m.key, new, ev, ((System.currentTimeMillis() - sbn.postTime) / 1000).toInt().coerceAtLeast(0))
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification, rankingMap: RankingMap, reason: Int) {
@@ -47,8 +60,11 @@ class RadarListener : NotificationListenerService() {
 
     private fun tracked(sbn: StatusBarNotification): Boolean {
         val pkg = sbn.packageName
+        val n = sbn.notification
         val app = pkg in Prefs(this).enabled || (BuildConfig.DEBUG && pkg == "com.android.shell")
-        return app && sbn.notification.flags and Notification.FLAG_GROUP_SUMMARY == 0
+        if (!app || n.flags and Notification.FLAG_GROUP_SUMMARY != 0) return false
+        val ongoing = n.flags and (Notification.FLAG_ONGOING_EVENT or Notification.FLAG_FOREGROUND_SERVICE) != 0
+        return Radar.isChat(n.category, ongoing, NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(n) != null)
     }
 
     private fun title(n: Notification): String? {

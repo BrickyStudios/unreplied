@@ -41,6 +41,9 @@ fun messengerLabel(pkg: String) = MESSENGERS.firstOrNull { it.pkg == pkg }?.labe
  * falls back to opening the messenger and a reply falls back to "copy and open".
  */
 object Live {
+    /** Set by the listener; the app asks Android to rebind when access is granted but this stays false. */
+    @Volatile var connected = false
+
     private class Acts(val open: PendingIntent?, val reply: Notification.Action?)
     private val acts = ConcurrentHashMap<String, Acts>()
 

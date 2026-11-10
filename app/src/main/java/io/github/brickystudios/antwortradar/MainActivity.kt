@@ -1,9 +1,11 @@
 package io.github.brickystudios.antwortradar
 
 import android.Manifest
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.service.notification.NotificationListenerService
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -24,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import kotlinx.coroutines.delay
 
@@ -58,6 +61,9 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         Widgets.refresh(this) // "Später" may have run out since the last change
+        // access granted but the listener not bound (after an update, or killed by a battery saver): ask again
+        val granted = packageName in NotificationManagerCompat.getEnabledListenerPackages(this)
+        if (granted && !Live.connected) NotificationListenerService.requestRebind(ComponentName(this, RadarListener::class.java))
     }
 }
 

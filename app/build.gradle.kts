@@ -12,8 +12,8 @@ android {
         applicationId = "io.github.brickystudios.antwortradar"
         minSdk = 26
         targetSdk = 35
-        versionCode = 3
-        versionName = "0.2.1"
+        versionCode = 4
+        versionName = "0.2.2"
     }
 
     // Release key lives only in CI secrets (and ~/.config/unreplied on the maintainer's machine).
