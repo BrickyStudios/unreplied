@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -38,7 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -69,8 +70,8 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
 
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp).padding(bottom = 32.dp)) {
         Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back), tint = Text1) }
-            Text(stringResource(R.string.settings), color = Text1, fontSize = 28.sp, fontWeight = FontWeight.Bold, letterSpacing = (-0.4).sp)
+            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back), tint = Text2) }
+            Text(stringResource(R.string.settings), color = Text1, style = TitleStyle)
         }
 
         // why messages may arrive late: an unbound listener or a battery saver that stops it
@@ -85,7 +86,7 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
                 )
             }
             GroupDivider()
-            TapRow(stringResource(R.string.diagnostics), Coral) {
+            TapRow(stringResource(R.string.diagnostics), Text1) {
                 Diagnostics.share(ctx)
                 Toast.makeText(ctx, R.string.diagnostics_copied, Toast.LENGTH_LONG).show()
             }
@@ -102,13 +103,11 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
 
         SectionLabel(stringResource(R.string.settings_reminder))
         Group {
-            Row(Modifier.padding(horizontal = 8.dp).heightIn(min = 56.dp), verticalAlignment = Alignment.CenterVertically) {
-                TextButton(onClick = { hour = (hour + 23) % 24; prefs.hour = hour; Summary.schedule(ctx) }) { Text("−", color = Coral, fontSize = 22.sp) }
-                Text(stringResource(R.string.hour_fmt, hour), color = Text1, fontSize = 17.sp)
-                TextButton(onClick = { hour = (hour + 1) % 24; prefs.hour = hour; Summary.schedule(ctx) }) { Text("+", color = Coral, fontSize = 22.sp) }
-            }
+            Stepper(stringResource(R.string.reminder_time), stringResource(R.string.hour_fmt, hour),
+                { hour = (hour + 23) % 24; prefs.hour = hour; Summary.schedule(ctx) },
+                { hour = (hour + 1) % 24; prefs.hour = hour; Summary.schedule(ctx) })
             GroupDivider()
-            TapRow(stringResource(R.string.test_now), Coral) { Summary.show(ctx) }
+            TapRow(stringResource(R.string.test_now), Text1) { Summary.show(ctx) }
         }
 
         SectionLabel(stringResource(R.string.settings_messengers))
@@ -130,7 +129,7 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
             }
             if (!showAll && installed.isNotEmpty() && installed.size < MESSENGERS.size) {
                 GroupDivider()
-                TapRow(stringResource(R.string.show_all), Coral) { showAll = true }
+                TapRow(stringResource(R.string.show_all), Text1) { showAll = true }
             }
         }
         if (installed.isEmpty()) Footnote(stringResource(R.string.none_installed))
@@ -167,22 +166,22 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
             if (ignored.isEmpty()) Text(stringResource(R.string.none), color = Text2, fontSize = 15.sp, modifier = Modifier.padding(16.dp))
             ignored.entries.forEachIndexed { i, (key, name) ->
                 if (i > 0) GroupDivider()
-                Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 4.dp).heightIn(min = 52.dp), verticalAlignment = Alignment.CenterVertically) {
+                Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 4.dp).heightIn(min = 56.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text("$name  ${messengerLabel(key.substringBefore('|'))}", color = Text1, modifier = Modifier.weight(1f))
-                    TextButton(onClick = { ignored = ignored - key; prefs.ignored = ignored }) { Text(stringResource(R.string.unignore), color = Coral) }
+                    TextButton(onClick = { ignored = ignored - key; prefs.ignored = ignored }) { Text(stringResource(R.string.unignore), color = Text1) }
                 }
             }
         }
 
         Row(verticalAlignment = Alignment.Bottom) {
             SectionLabel(stringResource(R.string.settings_log), Modifier.weight(1f))
-            if (log.isNotEmpty()) TextButton(onClick = Store::clearLog) { Text(stringResource(R.string.clear), color = Coral) }
+            if (log.isNotEmpty()) TextButton(onClick = Store::clearLog) { Text(stringResource(R.string.clear), color = Text1) }
         }
         Group {
             if (log.isEmpty()) Text(stringResource(R.string.log_empty), color = Text2, fontSize = 15.sp, modifier = Modifier.padding(16.dp))
             log.forEachIndexed { i, l ->
                 if (i > 0) GroupDivider()
-                Row(Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
+                Row(Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
                     Text(shortTime(ctx, l.time, now), color = Text2, fontSize = 13.sp, modifier = Modifier.padding(end = 12.dp))
                     Text("${l.name}: ${evText(ctx, l)}", color = Text1, fontSize = 13.sp)
                 }
@@ -204,10 +203,10 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
                 val u = update
                 if (u != null) TapRow(stringResource(R.string.update_available, u.release.version) + " · " + stringResource(R.string.update_install), Coral) {
                     scope.launch { Updater.install(ctx) }
-                } else TapRow(stringResource(R.string.check_now), Coral) { scope.launch { Updater.check(ctx, manual = true) } }
-                note?.let { Text(stringResource(it), color = Text2, fontSize = 14.sp, modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 14.dp)) }
+                } else TapRow(stringResource(R.string.check_now), Text1) { scope.launch { Updater.check(ctx, manual = true) } }
+                note?.let { Text(stringResource(it), color = Text2, fontSize = 14.sp, modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) }
             } else {
-                TapRow(stringResource(R.string.open_releases), Coral) {
+                TapRow(stringResource(R.string.open_releases), Text1) {
                     runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Releases.PAGE))) }
                 }
             }
@@ -224,8 +223,8 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
 
         TextButton(
             onClick = { runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/BrickyStudios/unreplied"))) } },
-            modifier = Modifier.padding(top = 16.dp),
-        ) { Text(stringResource(R.string.about, BuildConfig.VERSION_NAME), color = Text2, fontSize = 12.sp) }
+            modifier = Modifier.padding(start = 4.dp, top = 16.dp),
+        ) { Text(stringResource(R.string.about, BuildConfig.VERSION_NAME), color = Text2, fontSize = 13.sp) }
     }
 }
 
@@ -234,17 +233,18 @@ fun SettingsScreen(now: Long, onBack: () -> Unit) {
 private fun Stepper(label: String, value: String, minus: () -> Unit, plus: () -> Unit) {
     Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 4.dp).heightIn(min = 56.dp), verticalAlignment = Alignment.CenterVertically) {
         Text(label, color = Text1, fontSize = 16.sp, modifier = Modifier.weight(1f))
-        TextButton(onClick = minus) { Text("−", color = Coral, fontSize = 22.sp) }
-        Text(value, color = Text1, fontSize = 16.sp)
-        TextButton(onClick = plus) { Text("+", color = Coral, fontSize = 22.sp) }
+        // 48dp buttons and a fixed value width: − and + sit in the same column in every row, and long labels keep their line
+        IconButton(onClick = minus) { Text("−", color = Text2, fontSize = 22.sp) }
+        Text(value, color = Text1, fontSize = 16.sp, textAlign = TextAlign.Center, modifier = Modifier.widthIn(min = 80.dp))
+        IconButton(onClick = plus) { Text("+", color = Text2, fontSize = 22.sp) }
     }
 }
 
-/** A full-width tappable row inside a group: the whole row is the target, at least 52dp tall. */
+/** A full-width tappable row inside a group: the whole row is the target, 56dp tall like the other rows. */
 @Composable
 private fun TapRow(label: String, color: Color, onClick: () -> Unit) {
     Text(
         label, color = color, fontSize = 16.sp,
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).heightIn(min = 52.dp).padding(horizontal = 16.dp, vertical = 15.dp),
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).heightIn(min = 56.dp).padding(16.dp),
     )
 }

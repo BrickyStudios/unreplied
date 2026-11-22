@@ -25,10 +25,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.Typography
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -41,6 +45,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -57,6 +62,17 @@ val Line = Color(0xFF3A3550)
 val Text1 = Color(0xFFEDEAF5)
 val Text2 = Color(0xFFA29CB5)
 val Coral = Color(0xFFFF8A65)
+/** Dividers and outlines: the text colour at 10 %, so they part rows without drawing boxes. */
+val Hairline = Text1.copy(alpha = 0.1f)
+
+/** Every Text without its own style: no extra tracking, and figures in one column (ages, times, 1/4). */
+val AppType = Typography().run { copy(bodyLarge = bodyLarge.copy(letterSpacing = 0.sp, fontFeatureSettings = "tnum")) }
+
+/** The one page title: list, sprint and settings. Hierarchy from size, not weight. */
+val TitleStyle = TextStyle(fontSize = 32.sp, lineHeight = 40.sp, fontWeight = FontWeight.Medium)
+
+/** Marks a favorite in [ChatRow]'s right column. */
+const val FAVORITE = "★"
 
 /** Critically damped, about 0.35 s to settle: no overshoot on anything that was not thrown. */
 const val SPRING_STIFFNESS = 320f
@@ -113,12 +129,12 @@ fun confirmHaptic(view: android.view.View) {
 /** Small muted label above a group, sentence case. */
 @Composable
 fun SectionLabel(text: String, modifier: Modifier = Modifier) =
-    Text(text, color = Text2, fontSize = 13.sp, fontWeight = FontWeight.Medium, modifier = modifier.padding(start = 4.dp, top = 24.dp, bottom = 8.dp))
+    Text(text, color = Text2, fontSize = 13.sp, fontWeight = FontWeight.Medium, modifier = modifier.padding(start = 16.dp, top = 24.dp, bottom = 8.dp))
 
 /** Footnote under a group: the explanation lives here, not inside the controls. */
 @Composable
 fun Footnote(text: String, modifier: Modifier = Modifier) =
-    Text(text, color = Text2, fontSize = 13.sp, lineHeight = 18.sp, modifier = modifier.padding(start = 4.dp, end = 4.dp, top = 8.dp))
+    Text(text, color = Text2, fontSize = 13.sp, lineHeight = 20.sp, modifier = modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp))
 
 /** One grouped surface; rows inside are parted by hairlines, never boxes in boxes. */
 @Composable
@@ -127,7 +143,7 @@ fun Group(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> 
 }
 
 @Composable
-fun GroupDivider() = HorizontalDivider(color = Line, thickness = 0.5.dp, modifier = Modifier.padding(start = 16.dp))
+fun GroupDivider() = HorizontalDivider(color = Hairline, thickness = 1.dp, modifier = Modifier.padding(start = 16.dp))
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -141,24 +157,25 @@ fun ChatRow(
         Modifier.fillMaxWidth().pressScale(interaction).alpha(if (dim) 0.5f else 1f)
             .clip(RoundedCornerShape(16.dp)).background(CardBg)
             .combinedClickable(interactionSource = interaction, indication = ripple(), onClick = onClick, onLongClick = onLongClick)
-            .padding(horizontal = 16.dp, vertical = 14.dp),
+            .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.size(40.dp).clip(CircleShape).background(if (group) Coral.copy(alpha = 0.16f) else Line), Alignment.Center) {
-            Text(if (group) "@" else name.take(1).uppercase(), color = if (group) Coral else Text1, fontWeight = FontWeight.SemiBold)
+        Box(Modifier.size(40.dp).clip(CircleShape).background(Line), Alignment.Center) {
+            Text(if (group) "@" else name.take(1).uppercase(), color = Text1, fontWeight = FontWeight.Medium)
         }
-        Spacer(Modifier.width(14.dp))
+        Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(name, color = Text1, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
+                Text(name, color = Text1, fontSize = 17.sp, fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
                 if (badge != null) Text("  $badge", color = Text2, fontSize = 12.sp, maxLines = 1)
             }
             Text(preview, color = Text2, fontSize = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
-        Spacer(Modifier.width(10.dp))
+        Spacer(Modifier.width(12.dp))
         Column(horizontalAlignment = Alignment.End) {
             // waiting long is a colour signal, not a heavier box
-            Text(right, color = if (urgent || right == "★") Coral else Text1, fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
+            if (right == FAVORITE) Icon(Icons.Filled.Star, null, tint = Text2, modifier = Modifier.size(20.dp))
+            else Text(right, color = if (urgent) Coral else Text1, fontWeight = FontWeight.Medium, fontSize = 15.sp)
             if (rightSmall != null) Text(rightSmall, color = Text2, fontSize = 12.sp)
         }
     }
@@ -189,7 +206,7 @@ fun Swipe(left: Pair<String, () -> Unit>?, right: Pair<String, () -> Unit>?, con
             Box(
                 Modifier.fillMaxSize().clip(RoundedCornerShape(16.dp)).background(if (toRight) Line else Coral).padding(horizontal = 24.dp),
                 if (toRight) Alignment.CenterStart else Alignment.CenterEnd,
-            ) { Text((if (toRight) right?.first else left?.first) ?: "", color = if (toRight) Text1 else Ink, fontWeight = FontWeight.SemiBold) }
+            ) { Text((if (toRight) right?.first else left?.first) ?: "", color = if (toRight) Text1 else Ink, fontWeight = FontWeight.Medium) }
         },
     ) { content() }
 }

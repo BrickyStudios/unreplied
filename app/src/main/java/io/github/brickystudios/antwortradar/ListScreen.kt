@@ -14,10 +14,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -98,7 +100,7 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
         item {
             Row(Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 8.dp), verticalAlignment = Alignment.Top) {
                 Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.waiting_title), color = Text1, fontSize = 34.sp, lineHeight = 38.sp, fontWeight = FontWeight.Bold, letterSpacing = (-0.6).sp)
+                    Text(stringResource(R.string.waiting_title), color = Text1, style = TitleStyle)
                     val meta = pluralStringResource(R.plurals.waiting_meta, waiting.size, waiting.size)
                     Text(if (weekDone > 0) meta + "\n" + stringResource(R.string.week_done, weekDone) else meta, color = Text2, fontSize = 15.sp, modifier = Modifier.padding(top = 4.dp))
                 }
@@ -109,8 +111,8 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
             item(key = "update") {
                 Group {
                     Column(Modifier.padding(20.dp)) {
-                        Text(stringResource(R.string.update_available, u.release.version), color = Text1, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
-                        if (u.failed) Text(stringResource(R.string.update_failed), color = Coral, fontSize = 14.sp, modifier = Modifier.padding(top = 6.dp))
+                        Text(stringResource(R.string.update_available, u.release.version), color = Text1, fontSize = 17.sp, fontWeight = FontWeight.Medium)
+                        if (u.failed) Text(stringResource(R.string.update_failed), color = Coral, fontSize = 14.sp, modifier = Modifier.padding(top = 8.dp))
                         Row(Modifier.padding(top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                             Button(
                                 onClick = { scope.launch { Updater.install(ctx) } }, enabled = u.progress == null,
@@ -127,13 +129,13 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
         if (!allowed) item {
             Group {
                 Column(Modifier.padding(20.dp)) {
-                    Text(stringResource(R.string.access_title), color = Text1, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
-                    Text(stringResource(R.string.access_body), color = Text2, fontSize = 14.sp, modifier = Modifier.padding(top = 6.dp, bottom = 16.dp))
+                    Text(stringResource(R.string.access_title), color = Text1, fontSize = 17.sp, fontWeight = FontWeight.Medium)
+                    Text(stringResource(R.string.access_body), color = Text2, fontSize = 14.sp, modifier = Modifier.padding(top = 8.dp, bottom = 16.dp))
                     Button(
                         onClick = { triedAccess = true; ctx.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)) },
                         colors = ButtonDefaults.buttonColors(containerColor = Coral, contentColor = Ink),
                         modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                    ) { Text(stringResource(R.string.access_button), fontWeight = FontWeight.SemiBold) }
+                    ) { Text(stringResource(R.string.access_button)) }
                     if (triedAccess) {
                         Text(stringResource(R.string.restricted_help), color = Text2, fontSize = 14.sp, modifier = Modifier.padding(top = 16.dp))
                         TextButton(onClick = { ctx.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + ctx.packageName))) }) {
@@ -146,7 +148,7 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
         if (!onboarded) item {
             Group {
                 Column(Modifier.padding(20.dp)) {
-                    Text(stringResource(R.string.onboard_title), color = Text1, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.onboard_title), color = Text1, fontSize = 17.sp, fontWeight = FontWeight.Medium)
                     listOf(R.string.onboard_1, R.string.onboard_2, R.string.onboard_3).forEach {
                         Text(stringResource(it), color = Text2, fontSize = 14.sp, modifier = Modifier.padding(top = 8.dp))
                     }
@@ -163,7 +165,7 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
             Button(
                 onClick = { onSprint(null) }, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).padding(bottom = 4.dp).then(moving()),
                 colors = ButtonDefaults.buttonColors(containerColor = Coral, contentColor = Ink),
-            ) { Text(stringResource(R.string.start_sprint), fontWeight = FontWeight.SemiBold, fontSize = 16.sp) }
+            ) { Text(stringResource(R.string.start_sprint), fontSize = 16.sp) }
         }
         if (waiting.isEmpty() && allowed) item(key = "empty") { Empty(Radar.doneSince(entries.values, startOfDay(now)), still) }
         items(waiting, key = { it.key }) { e ->
@@ -193,7 +195,7 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
                 Box(moving()) {
                     Swipe(left = stringResource(R.string.checked_in) to { Store.touch(c.key, c.name, System.currentTimeMillis()) }, right = null) {
                         ChatRow(
-                            c.name, stringResource(R.string.quiet_since, ageText(ctx, now - c.last)), "★", null,
+                            c.name, stringResource(R.string.quiet_since, ageText(ctx, now - c.last)), FAVORITE, null,
                             group = false, badge = if (showBadges) messengerLabel(c.key.substringBefore('|')) else null,
                             urgent = false, dim = false, onClick = { Live.open(ctx, c.key) },
                         )
@@ -223,14 +225,14 @@ fun ListScreen(now: Long, onSettings: () -> Unit, onSprint: (String?) -> Unit) {
 private fun SelfTest(result: Map<String, Pair<Boolean, Int>>, onDone: () -> Unit) {
     Group {
         Column(Modifier.padding(20.dp)) {
-            Text(stringResource(R.string.selftest_title), color = Text1, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
-            Text(stringResource(R.string.selftest_body), color = Text2, fontSize = 14.sp, modifier = Modifier.padding(top = 6.dp))
+            Text(stringResource(R.string.selftest_title), color = Text1, fontSize = 17.sp, fontWeight = FontWeight.Medium)
+            Text(stringResource(R.string.selftest_body), color = Text2, fontSize = 14.sp, modifier = Modifier.padding(top = 8.dp))
             if (result.isEmpty()) Text(stringResource(R.string.selftest_waiting), color = Text2, fontSize = 14.sp, modifier = Modifier.padding(top = 12.dp))
             result.forEach { (app, r) ->
                 val label = messengerLabel(app)
                 Text(
                     if (r.first) stringResource(R.string.selftest_ok, label, r.second) else stringResource(R.string.selftest_bad, label, r.second),
-                    color = if (r.first) Coral else Text1, fontSize = 15.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(top = 12.dp),
+                    color = if (r.first) Text1 else Coral, fontSize = 15.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(top = 12.dp),
                 )
             }
             if (result.values.any { !it.first }) Text(stringResource(R.string.selftest_bad_help), color = Text2, fontSize = 13.sp, modifier = Modifier.padding(top = 8.dp))
@@ -245,9 +247,9 @@ private fun Empty(doneToday: Int, still: Boolean) {
     val scale = remember { Animatable(if (still) 1f else 0.8f) }
     LaunchedEffect(Unit) { scale.animateTo(1f, spring(dampingRatio = 1f, stiffness = SPRING_STIFFNESS)) }
     Column(Modifier.fillMaxWidth().padding(vertical = 64.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("✓", color = Coral, fontSize = 52.sp, modifier = Modifier.graphicsLayer { scaleX = scale.value; scaleY = scale.value })
-        Text(stringResource(R.string.empty_title), color = Text1, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 8.dp))
-        if (doneToday > 0) Text(pluralStringResource(R.plurals.done_today, doneToday, doneToday), color = Text2, fontSize = 15.sp, modifier = Modifier.padding(top = 6.dp))
+        Icon(Icons.Filled.Check, null, tint = Coral, modifier = Modifier.size(48.dp).graphicsLayer { scaleX = scale.value; scaleY = scale.value })
+        Text(stringResource(R.string.empty_title), color = Text1, fontSize = 20.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(top = 8.dp))
+        if (doneToday > 0) Text(pluralStringResource(R.plurals.done_today, doneToday, doneToday), color = Text2, fontSize = 15.sp, modifier = Modifier.padding(top = 4.dp))
     }
 }
 

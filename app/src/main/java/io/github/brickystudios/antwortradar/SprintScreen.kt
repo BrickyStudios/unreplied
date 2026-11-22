@@ -22,12 +22,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -88,7 +90,7 @@ fun SprintScreen(start: String?, now: Long, onExit: () -> Unit) {
 
     Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
         Row(Modifier.fillMaxWidth().padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onExit) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back), tint = Text1) }
+            IconButton(onClick = onExit) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back), tint = Text2) }
             LinearProgressIndicator(
                 progress = { progress }, color = Coral, trackColor = Line, drawStopIndicator = {},
                 modifier = Modifier.weight(1f).clip(RoundedCornerShape(2.dp)),
@@ -118,7 +120,7 @@ fun SprintScreen(start: String?, now: Long, onExit: () -> Unit) {
             val canReply = Live.canReply(e.key)
 
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = 24.dp, bottom = 24.dp)) {
-                Text(e.name, color = Text1, fontSize = 34.sp, lineHeight = 38.sp, fontWeight = FontWeight.Bold, letterSpacing = (-0.6).sp)
+                Text(e.name, color = Text1, style = TitleStyle)
                 Text(
                     messengerLabel(e.app) + " · " + stringResource(R.string.waiting_since, ageText(ctx, now - e.since)),
                     color = Text2, fontSize = 15.sp, modifier = Modifier.padding(top = 4.dp),
@@ -137,7 +139,7 @@ fun SprintScreen(start: String?, now: Long, onExit: () -> Unit) {
                                 containerColor = CardBg, labelColor = Text1,
                                 selectedContainerColor = Coral.copy(alpha = 0.18f), selectedLabelColor = Text1,
                             ),
-                            border = FilterChipDefaults.filterChipBorder(enabled = true, selected = text == r, borderColor = Line, selectedBorderColor = Coral),
+                            border = FilterChipDefaults.filterChipBorder(enabled = true, selected = text == r, borderColor = Hairline, selectedBorderColor = Coral),
                         )
                     }
                 }
@@ -162,7 +164,7 @@ fun SprintScreen(start: String?, now: Long, onExit: () -> Unit) {
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Coral, contentColor = Ink),
                     modifier = Modifier.fillMaxWidth().padding(top = 16.dp).heightIn(min = 52.dp),
-                ) { Text(stringResource(if (canReply) R.string.send else R.string.copy_open), fontWeight = FontWeight.SemiBold, fontSize = 16.sp) }
+                ) { Text(stringResource(if (canReply) R.string.send else R.string.copy_open), fontSize = 16.sp) }
 
                 Row(Modifier.fillMaxWidth().padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     val tonal = ButtonDefaults.filledTonalButtonColors(containerColor = CardBg, contentColor = Text1)
@@ -199,12 +201,12 @@ fun SprintScreen(start: String?, now: Long, onExit: () -> Unit) {
 @Composable
 private fun Done(handled: Int, onExit: () -> Unit) {
     Column(Modifier.fillMaxWidth().padding(top = 120.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("✓", color = Coral, fontSize = 52.sp)
-        Text(stringResource(R.string.sprint_done), color = Text1, fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
-        Text(pluralStringResource(R.plurals.sprint_done_count, handled, handled), color = Text2, fontSize = 15.sp, modifier = Modifier.padding(top = 6.dp))
+        Icon(Icons.Filled.Check, null, tint = Coral, modifier = Modifier.size(48.dp))
+        Text(stringResource(R.string.sprint_done), color = Text1, fontSize = 20.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(top = 8.dp))
+        Text(pluralStringResource(R.plurals.sprint_done_count, handled, handled), color = Text2, fontSize = 15.sp, modifier = Modifier.padding(top = 4.dp))
         Button(
             onClick = onExit, modifier = Modifier.padding(top = 28.dp).height(48.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Coral, contentColor = Ink),
-        ) { Text(stringResource(R.string.back), fontWeight = FontWeight.SemiBold) }
+        ) { Text(stringResource(R.string.back)) }
     }
 }

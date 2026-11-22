@@ -22,10 +22,10 @@
     <string name="checked_in">checked in</string>
     <string name="section_unread">Unread (your messenger shows these too)</string>
     <string name="stored_note">Stored: name, times, first 80 characters. The app has no internet access.</string>
-    <string name="empty_title">Nobody is waiting for you.</string>
+    <string name="empty_title">Nobody is waiting for you</string>
     <plurals name="done_today">
-        <item quantity="one">%d answered today.</item>
-        <item quantity="other">%d answered today.</item>
+        <item quantity="one">%d answered today</item>
+        <item quantity="other">%d answered today</item>
     </plurals>
     <string name="read_at">read %s</string>
     <string name="done">done</string>
@@ -70,10 +70,10 @@
     <string name="skip">Skip</string>
     <string name="later">Later</string>
     <string name="mark_done">Done</string>
-    <string name="sprint_done">All through.</string>
+    <string name="sprint_done">All through</string>
     <plurals name="sprint_done_count">
-        <item quantity="one">%d chat answered or put away.</item>
-        <item quantity="other">%d chats answered or put away.</item>
+        <item quantity="one">%d chat answered or put away</item>
+        <item quantity="other">%d chats answered or put away</item>
     </plurals>
     <string name="sent_ok">Sent</string>
     <string name="send_failed">Couldn’t send, the text is copied</string>
@@ -81,6 +81,7 @@
 
     <!-- settings -->
     <string name="settings_reminder">Daily reminder</string>
+    <string name="reminder_time">Time</string>
     <string name="hour_fmt">%02d:00</string>
     <string name="test_now">Test now</string>
     <string name="settings_messengers">Messengers</string>
@@ -100,14 +101,14 @@
     </plurals>
     <string name="settings_ignored">Ignored chats</string>
     <string name="unignore">show again</string>
-    <string name="none">None.</string>
+    <string name="none">None</string>
     <string name="settings_log">Check log</string>
     <string name="log_body">Shows the reason code Android reports when a messenger removes a notification. If opening a chat shows 8 or 1, read detection works on your phone.</string>
     <string name="log_empty">Nothing yet. Get someone to text you and open the chat.</string>
     <string name="clear">clear</string>
     <string name="delete_all">Delete all data</string>
     <string name="delete_confirm">Tap again to delete all chats, contacts and the log</string>
-    <string name="deleted">Deleted.</string>
+    <string name="deleted">Deleted</string>
     <string name="about">Version %s · GPL-3.0 · source code on GitHub</string>
 
     <!-- log -->
@@ -139,7 +140,7 @@
     <string name="ev_connected">connected to notifications</string>
     <string name="ev_disconnected">disconnected from notifications, reconnecting</string>
     <string name="settings_connection">Connection</string>
-    <string name="connection_ok">Connected: new messages show up within a second.</string>
+    <string name="connection_ok">Connected: new messages show up within a second</string>
     <string name="connection_off">Not connected right now. Android reconnects it; until then new messages show up late.</string>
     <string name="battery_body">Some phones put apps to sleep to save battery and Unreplied then hears of messages late. Allowing it to run in the background fixes that. It uses next to no battery.</string>
     <string name="battery_button">Don’t put Unreplied to sleep</string>
@@ -171,7 +172,7 @@
     <string name="update_install">Install</string>
     <string name="update_later">Later</string>
     <string name="update_downloading">Downloading… %d %%</string>
-    <string name="update_none">You have the latest version.</string>
+    <string name="update_none">You have the latest version</string>
     <string name="update_failed">GitHub couldn’t be reached or the download failed. Try again later.</string>
     <string name="open_releases">Open the release page</string>
     <string name="updates_online_body">This version connects to GitHub only to look for a new release and download it. Your chats never leave the phone. The version without any internet access is Unreplied.apk on the same page.</string>

@@ -1,0 +1,4 @@
+- Titel und Namen sind weniger fett, kein extra Buchstabenabstand, Uhrzeiten und Wartezeiten stehen Ziffer für Ziffer untereinander
+- Koralle gibt es nur noch für den Antwort-Button, Chats, die seit über zwei Tagen warten, und die Schalter
+- Einstellungen: Überschriften stehen bündig mit dem Text in den Zeilen, die Uhrzeit der Tagesmeldung ist eine Zeile wie die anderen, − und + stehen in einer Spalte
+- Ein Häkchen-Symbol statt des ✓-Zeichens, wenn niemand wartet und am Ende des Sprints

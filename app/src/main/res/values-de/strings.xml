@@ -19,10 +19,10 @@
     <string name="checked_in">gemeldet</string>
     <string name="section_unread">Ungelesen (zeigt dein Messenger auch)</string>
     <string name="stored_note">Gespeichert: Name, Uhrzeiten, erste 80 Zeichen. Die App hat keinen Internetzugriff.</string>
-    <string name="empty_title">Niemand wartet auf dich.</string>
+    <string name="empty_title">Niemand wartet auf dich</string>
     <plurals name="done_today">
-        <item quantity="one">Heute %d erledigt.</item>
-        <item quantity="other">Heute %d erledigt.</item>
+        <item quantity="one">Heute %d erledigt</item>
+        <item quantity="other">Heute %d erledigt</item>
     </plurals>
     <string name="read_at">gelesen %s</string>
     <string name="done">erledigt</string>
@@ -63,16 +63,17 @@
     <string name="skip">Weiter</string>
     <string name="later">Später</string>
     <string name="mark_done">Erledigt</string>
-    <string name="sprint_done">Alle durch.</string>
+    <string name="sprint_done">Alle durch</string>
     <plurals name="sprint_done_count">
-        <item quantity="one">%d Chat beantwortet oder weggelegt.</item>
-        <item quantity="other">%d Chats beantwortet oder weggelegt.</item>
+        <item quantity="one">%d Chat beantwortet oder weggelegt</item>
+        <item quantity="other">%d Chats beantwortet oder weggelegt</item>
     </plurals>
     <string name="sent_ok">Gesendet</string>
     <string name="send_failed">Senden ging nicht, der Text ist kopiert</string>
     <string name="no_reply_button">Für diesen Chat gibt es gerade keinen Antwort-Knopf. Den bekommt Unreplied nur aus einer frischen Benachrichtigung. Text kopieren und im Chat senden.</string>
 
     <string name="settings_reminder">Tagesmeldung</string>
+    <string name="reminder_time">Uhrzeit</string>
     <string name="hour_fmt">%02d:00 Uhr</string>
     <string name="test_now">Jetzt testen</string>
     <string name="settings_messengers">Messenger</string>
@@ -92,14 +93,14 @@
     </plurals>
     <string name="settings_ignored">Ignorierte Chats</string>
     <string name="unignore">wieder anzeigen</string>
-    <string name="none">Keine.</string>
+    <string name="none">Keine</string>
     <string name="settings_log">Prüfprotokoll</string>
     <string name="log_body">Zeigt, welchen Grund-Code Android meldet, wenn ein Messenger eine Benachrichtigung entfernt. Steht beim Öffnen eines Chats 8 oder 1, klappt die Lese-Erkennung auf deinem Handy.</string>
     <string name="log_empty">Noch nichts. Lass dir eine Nachricht schicken und öffne den Chat.</string>
     <string name="clear">leeren</string>
     <string name="delete_all">Alle Daten löschen</string>
     <string name="delete_confirm">Noch mal tippen löscht alle Chats, Kontakte und das Protokoll</string>
-    <string name="deleted">Gelöscht.</string>
+    <string name="deleted">Gelöscht</string>
     <string name="about">Version %s · GPL-3.0 · Quellcode auf GitHub</string>
 
     <string name="ev_new">neue Nachricht</string>
@@ -129,7 +130,7 @@
     <string name="ev_connected">mit den Benachrichtigungen verbunden</string>
     <string name="ev_disconnected">Verbindung getrennt, wird neu verbunden</string>
     <string name="settings_connection">Verbindung</string>
-    <string name="connection_ok">Verbunden: Neue Nachrichten erscheinen innerhalb einer Sekunde.</string>
+    <string name="connection_ok">Verbunden: Neue Nachrichten erscheinen innerhalb einer Sekunde</string>
     <string name="connection_off">Gerade nicht verbunden. Android verbindet neu, bis dahin kommen neue Nachrichten verspätet an.</string>
     <string name="battery_body">Manche Handys schicken Apps zum Akkusparen schlafen, dann erfährt Unreplied erst spät von Nachrichten. Wenn du die App im Hintergrund laufen lässt, ist das behoben. Sie braucht dafür kaum Akku.</string>
     <string name="battery_button">Unreplied nicht schlafen legen</string>
@@ -161,7 +162,7 @@
     <string name="update_install">Installieren</string>
     <string name="update_later">Später</string>
     <string name="update_downloading">Lädt … %d %%</string>
-    <string name="update_none">Du hast die neueste Version.</string>
+    <string name="update_none">Du hast die neueste Version</string>
     <string name="update_failed">GitHub war nicht erreichbar oder der Download ist abgebrochen. Versuch es später noch mal.</string>
     <string name="open_releases">Release-Seite öffnen</string>
     <string name="updates_online_body">Diese Version verbindet sich nur mit GitHub, um eine neue Version zu finden und herunterzuladen. Deine Chats verlassen das Handy nie. Die Version ganz ohne Internet ist Unreplied.apk auf derselben Seite.</string>

@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
         // only Unreplied-Updates.apk has internet; release builds only, a debug build carries another key
         if (Updater.supported && !BuildConfig.DEBUG && Prefs(this).autoUpdate) lifecycleScope.launch { Updater.check(this@MainActivity, manual = false) }
         setContent {
-            MaterialTheme(colorScheme = darkColorScheme(background = Ink, surface = CardBg, primary = Coral, onPrimary = Ink)) {
+            MaterialTheme(colorScheme = darkColorScheme(background = Ink, surface = CardBg, primary = Coral, onPrimary = Ink), typography = AppType) {
                 Box(Modifier.fillMaxSize().background(Ink).safeDrawingPadding()) { App(sprintRequest) }
             }
         }

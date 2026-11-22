@@ -1,0 +1,4 @@
+- Titles and names use a lighter weight, text has no extra letter spacing, and times and ages line up digit for digit
+- Coral is left for the reply button, chats waiting more than two days, and the switches
+- Settings: section labels line up with the text in the rows, the reminder time is a row like the others, and − and + sit in one column
+- A check icon replaces the ✓ character when nobody is waiting and at the end of a sprint
